@@ -12,7 +12,8 @@ N=$1
 
 # generate master account
 m_account=$(geth --datadir ~/$root/data/master --password <(echo -n master) account new)
-echo "Master,"${m_account:10:40} >> $root/accounts	# substring func = {var:startIdx:endIdx}
+echo "Master's account address: "${m_account:10:40}
+echo ${m_account:10:40} >> ~/$root/data/master/account	# substring func = {var:startIdx:endIdx}
 
 # generate cluster nodes' account
 for ((i=0;i<N;++i)); do
@@ -21,8 +22,9 @@ for ((i=0;i<N;++i)); do
 	dd=$(printf "%02d" $i)		
 	
 	# save the account of nodes
-	n_account=$(geth --datadir $root/data/$dd --password <(echo -n $dd) account new)
+	n_account=$(geth --datadir ~/$root/data/$dd --password <(echo -n $dd) account new)
 	
-	echo "Node"$dd,${n_account:10:40} >> $root/accounts
+	echo "Node #"$dd"'s account address: "${n_account:10:40}
+	echo ${n_account:10:40} >> ~/$root/data/$dd/account
 
 done
