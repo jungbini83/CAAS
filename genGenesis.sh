@@ -5,10 +5,11 @@ m_addr=$(cat ~/${root}/data/master/account)
 echo $m_addr
 
 genesisContent='{
-	"alloc": "'
+	"alloc": {
+		"'
 genesisContent=$genesisContent$m_addr
-genesisContent=$genesisContent'"
-			balance": "5000000000000000000000000000"
+genesisContent=$genesisContent'": {
+			"balance": "5000000000000000000000000000"
 		}
 	},
 

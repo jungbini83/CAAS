@@ -5,7 +5,7 @@
 # <num of node>: the number of ethereum nodes to make
 root=$1
 if [ ! -d "$root" ]; then
-	mkdir root # make eth cluster root directory
+	mkdir ~/$root 		# make eth cluster root directory
 fi
 shift
 N=$1
