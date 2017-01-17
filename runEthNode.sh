@@ -7,8 +7,8 @@
 root=$1
 shift
 nn=$1
-shift
-cn=$1
+#shift
+#cn=$1
 
 # 1. make ethereum node account
 dd=$(printf "%02d" $nn)		# change node number to node ID like 01, 02, 03...
@@ -29,7 +29,9 @@ fileContents='[
 fileContents=$fileContents$masterEnode
 fileContents=$fileContents'
 ]'
-echo $fileContents >> ~/$root/data/$dd/static-nodes.json
+
+# connect this node to another node for connecting peer node at start
+# echo $fileContents >> ~/$root/data/$dd/static-nodes.json
 
 # 3. running ethereum node demon
 geth --datadir ~/$root/data/$dd init ~/$root/genesis.json

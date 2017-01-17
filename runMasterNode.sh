@@ -18,4 +18,4 @@ nohup geth --datadir ~/$root/data/master --rpc --rpcport "8540" --rpcapi "admin,
 --port 3030 --unlock=${accountAddr:10:40} --password=<(echo -n master) --nodiscover --mine &
 
 # 4. save master node's enode address
-geth --exec 'admin.nodeInfo.enode' attach http://localhost:8540 > ~/root/data/master/enode
+geth --exec 'admin.nodeInfo.enode' attach http://localhost:8540 > ~/$root/data/master/enode
