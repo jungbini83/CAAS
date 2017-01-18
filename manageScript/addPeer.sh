@@ -5,13 +5,24 @@
 # <srcNode>: the node that want to connect targetNode
 # <peerNode>: the peer node that will be connected to <srcNode>
 # <srcNode> regist <peerNode> as a kind of its peer nodes
-if [ "$#" -ne 3 ]; then
-	echo 'USAGE: addPeer.sh <rootDir> <srcNode> <peerNode>'
+if [ "$#" -eq 2 ]; then
+
+	if [ -f ../"root.cfg" ]; then
+		root=$(cat ../root.cfg)
+	else
+		echo 'root.cfg file is not exist. Then you can assigne root directory manually.'
+		echo 'USAGE: addPeer.sh <rootDir> <srcNode> <peerNode>'
+		exit 1
+	fi
+
+elif [ "$#" -eq 3 ]; then
+	root=$1	
+	shift
+else
+	echo 'USAGE: addPeer.sh [rootDir] <srcNode> <peerNode>'
 	exit 1
 fi
 
-root=$1
-shift
 sn=$1
 if [ $sn == 'master' ]; then
 	snd='master'

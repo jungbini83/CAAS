@@ -3,13 +3,24 @@
 # checkPeer.sh <rootDir> <srcNode>
 # <rootDir>: root directory of nodes
 # <srcNode>: the node that want to check peer list
-if [ "$#" -ne 2 ]; then
-	echo 'USAGE: checkPeer.sh <rootDir> <srcNode>'
+if [ "$#" -eq 1 ]; then
+
+	if [ -f ../"root.cfg" ]; then
+		root=$(cat ../root.cfg)
+	else 
+		echo 'root.cfg file is not exist. Then you can assigne root directory manually.'
+		echo 'USAGE: checkPeer.sh <rootDir> <srcNode>'
+		exit 1
+	fi
+
+elif [ "$#" -eq 2 ]; then
+	root=$1
+	shift
+else
+	echo 'USAGE: checkPeer.sh [rootDir] <srcNode>'
 	exit 1
 fi
 
-root=$1
-shift
 sn=$1
 if [ $sn == 'master' ]; then
 	snd='master'

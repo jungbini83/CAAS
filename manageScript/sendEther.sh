@@ -4,13 +4,24 @@
 # <rootDir>: node's root directory
 # <receiveNode>: node that receive ether from <sendNode> node
 # <ether>: amount of ether
-if [ "$#" -ne 4 ]; then
-	echo 'USAGE: sendEther.sh <rootDir> <sendNode> <receiveNode> <ether>'
+if [ "$#" -eq 3 ]; then
+
+	if [ -f ../"root.cfg" ]; then
+		root=$(cat ../root.cfg)
+	else 
+		echo 'root.cfg file is not exist. Then you can assigne root directory manually.'
+		echo 'USAGE: sendEther.sh <rootDir> <sendNode> <receiveNode> <ether>'
+		exit 1
+	fi
+
+elif [ "$#" -eq 4 ]; then
+	root=$1
+	shift
+else
+	echo 'USAGE: sendEther.sh [rootDir] <sendNode> <receiveNode> <ether>'
 	exit 1
 fi
 
-root=$1
-shift
 sn=$1
 if [ $sn == "master" ]; then
 	snd='master'

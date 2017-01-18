@@ -3,13 +3,24 @@
 # checkEther.sh <rootDir> <chkNode>
 # <rootDir>: node's root directory
 # <chkNode>: node that receive ether from <sendNode> node
-if [ "$#" -ne 2 ]; then
-	echo 'USAGE: checkEther.sh <rootDir> <chkNode>'
+if [ "$#" -eq 1 ]; then
+
+	if [ -f ../"root.cfg" ]; then
+		root=$(cat ../root.cfg)
+	else 
+		echo 'root.cfg file is not exist. Then you can assigne root directory manually.'
+		echo 'USAGE: checkEther.sh <rootDir> <chkNode>'
+		exit 1
+	fi
+
+elif [ "$#" -eq 2 ]; then
+	root=$1
+	shift
+else
+	echo 'USAGE: checkEther.sh [rootDir] <chkNode>'
 	exit 1
 fi
 
-root=$1
-shift
 cn=$1
 if [ $cn == 'master' ]; then
 	cnd='master'

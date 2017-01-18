@@ -3,13 +3,24 @@
 # lockAccount.sh <rootDit> <node id>
 # <rootDir>: node's root directory
 # <node id>: node id you want to lock its address 
-if [ "$#" -ne 2 ]; then
-	echo 'USAGE: lockAccount.sh <rootDit> <node id>'
+if [ "$#" -eq 1 ]; then
+
+	if [ -f ../"root.cfg" ]; then
+		root=$(cat ../root.cfg)
+	else 
+		echo 'root.cfg file is not exist. Then you can assigne root directory manually.'
+		echo 'USAGE: lockAccount.sh <rootDit> <node id>'
+		exit 1
+	fi
+
+elif [ "$#" -eq 2 ]; then
+	root=$1
+	shift
+else
+	echo 'USAGE: lockAccount.sh [rootDit] <node id>'
 	exit 1
 fi
 
-root=$1
-shift
 nid=$1
 if [ $nid == 'master' ]; then
 	nidd='master'

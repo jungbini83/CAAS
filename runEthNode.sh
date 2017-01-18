@@ -6,8 +6,7 @@
 if [ "$#" -eq 1 ]; then
 
 	if [ -f ./"root.cfg" ]; then
-		root=$(cat ./root.cfg)
-		nn=$1
+		root=$(cat ./root.cfg)		
 	else
 		echo 'root.cfg file is not exist. Then you can assigne root directory manually.'
 		echo 'USAGE: runEthNode.sh <rootDir> <node id>'
@@ -16,15 +15,16 @@ if [ "$#" -eq 1 ]; then
 
 elif [ "$#" -eq 2 ]; then
 	root=$1
-	shift
-	nn=$1
+	shift	
 else
-	echo 'USAGE: runEthNode.sh <rootDir> <node id>'
+	echo 'USAGE: runEthNode.sh [rootDir] <node id>'
 	exit 1
 fi
 
-# 1. make ethereum node account
+nn=$1
 dd=$(printf "%02d" $nn)		# change node number to node ID like 01, 02, 03...
+
+# 1. make ethereum node account
 accountAddr=$(geth --datadir ~/$root/data/$dd --password <(echo -n $dd) account new)
 echo "Node#"$dd "'s account address: "${accountAddr:10:40}
 echo ${accountAddr:10:40} >> ~/$root/data/$dd/account 	# save account address

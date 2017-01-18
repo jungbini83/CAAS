@@ -4,13 +4,24 @@
 # <rootDir>: root directory of nodes
 # <srcNode>: the node that want to remove peer Node
 # <peerNode>: the peer node that will be removed from <srcNode>
-if [ "$#" -ne 3 ]; then
-	echo 'USAGE: removePeer.sh <rootDir> <srcNode> <peerNode>'
+if [ "$#" -eq 2 ]; then
+
+	if [ -f ../"root.cfg" ]; then
+		root=$(cat ../root.cfg)
+	else 
+		echo 'root.cfg file is not exist. Then you can assigne root directory manually.'
+		echo 'USAGE: removePeer.sh <rootDir> <srcNode> <peerNode>'
+		exit 1
+	fi
+
+elif [ "$#" -eq 3 ]; then
+	root=$1
+	shift
+else
+	echo 'USAGE: removePeer.sh [rootDir] <srcNode> <peerNode>'
 	exit 1
 fi
 
-root=$1
-shift
 sn=$1
 if [ $sn == 'master' ]; then
 	snd='master'
