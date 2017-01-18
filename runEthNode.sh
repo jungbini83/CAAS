@@ -3,7 +3,7 @@
 # runEthNode.sh <root dir> <node id>
 # <root dir>: root directory where the log, chain, address, enode are saved
 # <node id>: node id written by 2 digit number format like 01, 02, 03...
-if [ "$#" -ne 1 ]; then
+if [ "$#" -eq 1 ]; then
 
 	if [ -f ./"root.cfg" ]; then
 		root=$(cat ./root.cfg)
@@ -14,7 +14,7 @@ if [ "$#" -ne 1 ]; then
 		exit 1
 	fi
 
-elif [ "$#" -ne 2 ]; then
+elif [ "$#" -eq 2 ]; then
 	root=$1
 	shift
 	nn=$1
