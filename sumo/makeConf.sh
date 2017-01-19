@@ -19,5 +19,5 @@ echo "<configuration>
 
 echo "<viewsettings>
 	<viewport y='200' x='200' zoom='90'/>
-	<delay value='200'/>
+	<delay value='1000'/>
 </viewsettings>" > ./map/$netType/$netType.settings.xml
