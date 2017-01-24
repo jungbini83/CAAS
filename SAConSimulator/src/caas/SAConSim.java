@@ -4,17 +4,23 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
+
 import org.eclipse.swt.widgets.Text;
-import swing2swt.layout.BorderLayout;
+
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+
 import java.io.BufferedReader;
+
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
 import java.util.Collection;
 import java.util.HashSet;
+
+
 
 import it.polito.appeal.traci.SumoTraciConnection;
 import it.polito.appeal.traci.Vehicle;
@@ -22,20 +28,13 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.layout.GridLayout;
+
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.List;
-import org.eclipse.jface.viewers.ListViewer;
-import org.eclipse.swt.custom.TableTree;
-import org.eclipse.jface.viewers.TableTreeViewer;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TreeColumn;
+
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.swt.widgets.Group;
 
@@ -43,8 +42,13 @@ public class SAConSim {
 
 	protected Shell shlSelfadaptiveContractSimulator;
 	
+	public TreeItem trtmNewTreeitem;
+	public Tree NodeTree;
+			
 	public static String userHomeDir;
-	
+	public static boolean autoStepRunning = false;
+	public static HashSet<String> vehicleList = new HashSet <String>();						// Current Sumo Vehicle List
+		
 	public static SumoTraciConnection connSumo;
 	private Table table;
 	private Text txtLog;
@@ -81,49 +85,10 @@ public class SAConSim {
 		}
 	}
 	
-	public void terminate() {
-		
-		if (connSumo != null && !connSumo.isClosed()) {
-			
-			System.out.println("Closing SUMO Server...");
-			try {
-				connSumo.close();
-			} catch (InterruptedException IE) {
-				System.out.println("SUMO Server Error: " + IE.getMessage());
-			} catch (IOException IOE) {
-				System.out.println("SUMO Server Error: " + IOE.getMessage());
-			}
-			
-			System.out.println("Terminate all ethereum nodes...");
-			
-		}
-		
-		String [] cmd = {"killall", "geth"};				
-		String [] removeCmd = {"rm", "-r", userHomeDir + "/ethereum"};
-		
-		try {
-			Process script_exec = Runtime.getRuntime().exec(cmd);
-			BufferedReader reader = new BufferedReader(new InputStreamReader(script_exec.getInputStream()));
-			
-			String output;
-			while ((output = reader.readLine()) != null) {
-				System.out.println(output);
-			}
-			
-			Runtime.getRuntime().exec(removeCmd);
-			System.out.println("Successfully terminated!");
-			
-		} catch (IOException ioe) {
-			System.out.println("Error: " + ioe.getMessage());
-		}	
-	}
-	
 	/**
 	 * Create contents of the window.
 	 */
 	protected void createContents() {
-		
-		HashSet<String> vehicleList = new HashSet <String>();						// Current Sumo Vehicle List
 		
 		shlSelfadaptiveContractSimulator = new Shell();
 		shlSelfadaptiveContractSimulator.setSize(1024, 768);
@@ -179,11 +144,11 @@ public class SAConSim {
 		
 		TreeViewer treeViewer = new TreeViewer(grpNodeProperties, SWT.BORDER);
 		
-		Tree NodeTree = treeViewer.getTree();
+		NodeTree = treeViewer.getTree();
 		NodeTree.setBounds(10, 10, 179, 186);
 		NodeTree.setLinesVisible(true);
 		
-		TreeItem trtmNewTreeitem = new TreeItem(NodeTree, SWT.NONE);
+		trtmNewTreeitem = new TreeItem(NodeTree, SWT.NONE);
 		trtmNewTreeitem.setText("Ethereum");
 		trtmNewTreeitem.setExpanded(true);
 		
@@ -191,6 +156,9 @@ public class SAConSim {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				
+				autoStepRunning = false;				
+				
+										
 				terminate();
 				
 				txtLog.append("Closing SUMO Server...\n");
@@ -208,6 +176,8 @@ public class SAConSim {
 		btnNextStep.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
+				
+				btnAutoStep.setEnabled(false); 									// Set Auto step to disable
 				
 				Collection<Vehicle> vehicles;				
 				if (connSumo != null) {
@@ -233,7 +203,6 @@ public class SAConSim {
 									"'s location is (" + vehicle.getPosition().getX() + "," + vehicle.getPosition().getY() + ")\n");							
 						}
 						
-						txtLog.getParent().layout();
 						connSumo.nextSimStep();
 						
 					} catch (IOException ioe) {
@@ -294,7 +263,58 @@ public class SAConSim {
 			
 			public void mouseDown(MouseEvent e) {
 				
+				autoStepRunning = true;
 				
+				int stepTime = (int) getLastDepartTime("/caasproject/sumo/map/grid/grid.rou.xml");
+				
+				btnNextStep.setEnabled(false); 									// Set Next step button to disable
+				
+				for (int i = 0; i < stepTime; i++) {
+					
+					Display.getDefault().asyncExec(new Runnable() {
+						
+						public void run() {
+							
+							int time = connSumo.getCurrentSimTime() / 1000;
+							
+							try {
+							
+								if (autoStepRunning) {
+								
+									Collection<Vehicle> vehicles = connSumo.getVehicleRepository().getAll().values();
+									for (Vehicle vehicle: vehicles) {
+										
+										if (!vehicleList.contains(vehicle.getID())) {
+											
+											txtLog.append("Vehicle ID " + vehicle.getID() + " is newly entered in the map.\n");								
+											vehicleList.add(vehicle.getID());
+																							
+											TreeItem nodeItem = new TreeItem(trtmNewTreeitem, SWT.NONE);
+											nodeItem.setText("Node#" + vehicle.getID());
+											NodeTree.setTopItem(nodeItem);
+												
+										}										
+										
+										txtLog.append("At time step " + time + ", Vehicle ID " + vehicle.getID() + 
+											"'s location is (" + vehicle.getPosition().getX() + "," + vehicle.getPosition().getY() + ")\n");
+										
+										Thread.sleep(Integer.parseInt(txtDelay.getText()));									
+									}
+									
+									connSumo.nextSimStep();
+								}
+								
+							} catch (IOException | InterruptedException e) {
+								try {
+									connSumo.close();
+								} catch (IOException | InterruptedException e1) {}
+								
+								e.printStackTrace();
+							}
+						}
+						
+					});
+				}
 			}
 		});
 		
@@ -312,7 +332,7 @@ public class SAConSim {
 		lblNewLabel.setText("Delay(ms):");
 		
 		txtDelay = new Text(grpSimulationSetting, SWT.BORDER);
-		txtDelay.setText("300");
+		txtDelay.setText("100");
 		txtDelay.setBounds(96, 6, 93, 23);	
 		
 		
@@ -321,6 +341,69 @@ public class SAConSim {
 				terminate();			
 			}
 		});
+		
+	}
+	
+	public void terminate() {
+		
+		if (connSumo != null) {
+			
+			System.out.println("Closing SUMO Server...");
+			try {
+				connSumo.close();
+			} catch (InterruptedException IE) {
+				System.out.println("SUMO Server Error: " + IE.getMessage());
+			} catch (IOException IOE) {
+				System.out.println("SUMO Server Error: " + IOE.getMessage());
+			}
+			
+			System.out.println("Terminate all ethereum nodes...");
+			
+		}
+		
+		String [] cmd = {"killall", "geth"};				
+		String [] removeCmd = {"rm", "-r", userHomeDir + "/ethereum"};
+		
+		try {
+			Process script_exec = Runtime.getRuntime().exec(cmd);
+			BufferedReader reader = new BufferedReader(new InputStreamReader(script_exec.getInputStream()));
+			
+			String output;
+			while ((output = reader.readLine()) != null) {
+				System.out.println(output);
+			}
+			
+			Runtime.getRuntime().exec(removeCmd);
+			System.out.println("Successfully terminated!");
+			
+		} catch (IOException ioe) {
+			System.out.println("Error: " + ioe.getMessage());
+		}	
+	}
+	
+	public double getLastDepartTime(String filePath) {
+		
+		String lastTime = "";
+		
+		try {
+			
+			FileReader fr = new FileReader(userHomeDir + filePath);
+			BufferedReader br = new BufferedReader(fr);
 
+			String s;
+			String lastVehicle = "";
+			while((s = br.readLine()) != null) {
+				if (s.indexOf("<vehicle id=")>=0)
+					lastVehicle = s;
+			}
+			
+			lastTime = lastVehicle.substring(lastVehicle.indexOf("depart=")+8, lastVehicle.indexOf("\"", lastVehicle.indexOf("depart=")+8));			
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return Math.ceil(Float.parseFloat(lastTime));
+		
 	}
 }
