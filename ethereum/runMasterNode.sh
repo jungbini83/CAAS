@@ -51,6 +51,7 @@ nohup geth --datadir ~/$root/data/master --rpc --rpcport "9430" --rpcapi "admin,
 --port 4430 --unlock=${accountAddr:10:40} --password=<(echo -n master) --nodiscover --mine > ~/$root/data/master/log 2>&1 &
 
 # 4. save master node's enode address
+sleep 1			# sleep 1 sec for waiting geth client establishment
 geth --exec 'admin.nodeInfo.enode' attach http://localhost:9430 > ~/$root/data/master/enode
 enodeAddr=$(cat ~/$root/data/master/enode)
 echo "Master's enode address: "$enodeAddr
