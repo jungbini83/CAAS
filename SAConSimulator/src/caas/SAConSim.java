@@ -20,8 +20,6 @@ import java.io.InputStreamReader;
 import java.util.Collection;
 import java.util.HashSet;
 
-
-
 import it.polito.appeal.traci.SumoTraciConnection;
 import it.polito.appeal.traci.Vehicle;
 import org.eclipse.swt.events.MouseAdapter;
@@ -218,7 +216,7 @@ public class SAConSim {
 			public void mouseDown(MouseEvent e) {
 				
 				txtLog.append("Running SUMO Server...\n");
-				connSumo = new SumoTraciConnection(userHomeDir + "/caasproject/sumo/map/grid/grid.sumocfg", 12345);
+				connSumo = new SumoTraciConnection(userHomeDir + "/caas/sumo/map/grid/grid.sumocfg", 12345);
 				
 				try {
 					connSumo.runServer();
@@ -232,7 +230,7 @@ public class SAConSim {
 				}				
 				
 				txtLog.append("Running Master's node..." + "\n");
-				String [] cmd = {userHomeDir + "/caasproject/ethereum/runMasterNode.sh", "ethereum"};
+				String [] cmd = {userHomeDir + "/caas/ethereum/runMasterNode.sh", "ethereum"};
 				
 				try {
 					Process script_exec = Runtime.getRuntime().exec(cmd);
@@ -265,7 +263,7 @@ public class SAConSim {
 				
 				autoStepRunning = true;
 				
-				int stepTime = (int) getLastDepartTime("/caasproject/sumo/map/grid/grid.rou.xml");
+				int stepTime = (int) getLastDepartTime("/caas/sumo/map/grid/grid.rou.xml");
 				
 				btnNextStep.setEnabled(false); 									// Set Next step button to disable
 				
@@ -397,7 +395,10 @@ public class SAConSim {
 					lastVehicle = s;
 			}
 			
-			lastTime = lastVehicle.substring(lastVehicle.indexOf("depart=")+8, lastVehicle.indexOf("\"", lastVehicle.indexOf("depart=")+8));			
+			lastTime = lastVehicle.substring(lastVehicle.indexOf("depart=")+8, lastVehicle.indexOf("\"", lastVehicle.indexOf("depart=")+8));
+			
+			br.close();
+			fr.close();
 			
 		} catch (IOException e) {
 			e.printStackTrace();
