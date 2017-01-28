@@ -38,27 +38,29 @@ import org.eclipse.swt.widgets.Group;
 
 public class SAConSim {
 
+	public final static String HOME_DIR 			= System.getProperty("user.home");
+
 	protected Shell shlSelfadaptiveContractSimulator;
 	
 	public TreeItem trtmNewTreeitem;
 	public Tree NodeTree;
 			
-	public static String userHomeDir;
+	
 	public static boolean autoStepRunning = false;
 	public static HashSet<String> vehicleList = new HashSet <String>();						// Current Sumo Vehicle List
 		
 	public static SumoTraciConnection connSumo;
 	private Table table;
 	private Text txtLog;
+	private Text txtEthDir;
+	private Text txtRootDir;
 	private Text txtDelay;
 
 	/**
 	 * Launch the application.
 	 * @param args
 	 */
-	public static void main(String[] args) {
-		
-		userHomeDir = System.getProperty("user.home");		
+	public static void main(String[] args) {	
 				
 		try {
 			SAConSim window = new SAConSim();
@@ -155,8 +157,7 @@ public class SAConSim {
 			public void mouseDown(MouseEvent e) {
 				
 				autoStepRunning = false;				
-				
-										
+					
 				terminate();
 				
 				txtLog.append("Closing SUMO Server...\n");
@@ -177,30 +178,11 @@ public class SAConSim {
 				
 				btnAutoStep.setEnabled(false); 									// Set Auto step to disable
 				
-				Collection<Vehicle> vehicles;				
 				if (connSumo != null) {
 					
 					try {
 					
-						int time = connSumo.getCurrentSimTime() / 1000;
-						vehicles = connSumo.getVehicleRepository().getAll().values();
-						
-						for (Vehicle vehicle: vehicles) {
-							
-							if (!vehicleList.contains(vehicle.getID())) {
-							
-								txtLog.append("Vehicle ID " + vehicle.getID() + " is newly entered in the map.\n");								
-								vehicleList.add(vehicle.getID());
-								
-								TreeItem nodeItem = new TreeItem(trtmNewTreeitem, SWT.NONE);
-								nodeItem.setText("Node#" + vehicle.getID());
-								NodeTree.setTopItem(nodeItem);
-							} 
-							
-							txtLog.append("At time step " + time + ", Vehicle ID " + vehicle.getID() + 
-									"'s location is (" + vehicle.getPosition().getX() + "," + vehicle.getPosition().getY() + ")\n");							
-						}
-						
+						nextStep();						
 						connSumo.nextSimStep();
 						
 					} catch (IOException ioe) {
@@ -216,7 +198,7 @@ public class SAConSim {
 			public void mouseDown(MouseEvent e) {
 				
 				txtLog.append("Running SUMO Server...\n");
-				connSumo = new SumoTraciConnection(userHomeDir + "/caas/sumo/map/grid/grid.sumocfg", 12345);
+				connSumo = new SumoTraciConnection(HOME_DIR + '/' + txtRootDir.getText() + "/sumo/map/grid/grid.sumocfg", 12345);
 				
 				try {
 					connSumo.runServer();
@@ -230,7 +212,7 @@ public class SAConSim {
 				}				
 				
 				txtLog.append("Running Master's node..." + "\n");
-				String [] cmd = {userHomeDir + "/caas/ethereum/runMasterNode.sh", "ethereum"};
+				String [] cmd = {HOME_DIR + '/' + txtRootDir.getText() + "/ethereum/runMasterNode.sh", txtEthDir.getText()};
 				
 				try {
 					Process script_exec = Runtime.getRuntime().exec(cmd);
@@ -263,7 +245,7 @@ public class SAConSim {
 				
 				autoStepRunning = true;
 				
-				int stepTime = (int) getLastDepartTime("/caas/sumo/map/grid/grid.rou.xml");
+				int stepTime = (int) getLastDepartTime('/' + txtRootDir.getText() + "/sumo/map/grid/grid.rou.xml");
 				
 				btnNextStep.setEnabled(false); 									// Set Next step button to disable
 				
@@ -273,31 +255,11 @@ public class SAConSim {
 						
 						public void run() {
 							
-							int time = connSumo.getCurrentSimTime() / 1000;
-							
 							try {
 							
 								if (autoStepRunning) {
-								
-									Collection<Vehicle> vehicles = connSumo.getVehicleRepository().getAll().values();
-									for (Vehicle vehicle: vehicles) {
-										
-										if (!vehicleList.contains(vehicle.getID())) {
-											
-											txtLog.append("Vehicle ID " + vehicle.getID() + " is newly entered in the map.\n");								
-											vehicleList.add(vehicle.getID());
-																							
-											TreeItem nodeItem = new TreeItem(trtmNewTreeitem, SWT.NONE);
-											nodeItem.setText("Node#" + vehicle.getID());
-											NodeTree.setTopItem(nodeItem);
-												
-										}										
-										
-										txtLog.append("At time step " + time + ", Vehicle ID " + vehicle.getID() + 
-											"'s location is (" + vehicle.getPosition().getX() + "," + vehicle.getPosition().getY() + ")\n");
-										
-										Thread.sleep(Integer.parseInt(txtDelay.getText()));									
-									}
+									nextStep();
+									Thread.sleep(Integer.parseInt(txtDelay.getText()));		
 									
 									connSumo.nextSimStep();
 								}
@@ -325,13 +287,29 @@ public class SAConSim {
 		grpSimulationSetting.setText("Simulation Settings");
 		grpSimulationSetting.setBounds(809, 3, 201, 254);
 		
-		Label lblNewLabel = new Label(grpSimulationSetting, SWT.NONE);
-		lblNewLabel.setBounds(10, 10, 80, 15);
-		lblNewLabel.setText("Delay(ms):");
+		Label lblEthereumDir = new Label(grpSimulationSetting, SWT.NONE);
+		lblEthereumDir.setBounds(10, 40, 80, 15);
+		lblEthereumDir.setText("Ethereum Dir:");
+		
+		txtEthDir = new Text(grpSimulationSetting, SWT.BORDER);
+		txtEthDir.setText("ethereum");
+		txtEthDir.setBounds(96, 36, 93, 23);	
+		
+		Label lblRootDir = new Label(grpSimulationSetting, SWT.NONE);
+		lblRootDir.setText("Root Dir:");
+		lblRootDir.setBounds(10, 10, 80, 15);
+		
+		txtRootDir = new Text(grpSimulationSetting, SWT.BORDER);
+		txtRootDir.setText("caas");
+		txtRootDir.setBounds(96, 6, 93, 23);
+		
+		Label label = new Label(grpSimulationSetting, SWT.NONE);
+		label.setText("Delay(ms):");
+		label.setBounds(10, 69, 80, 15);
 		
 		txtDelay = new Text(grpSimulationSetting, SWT.BORDER);
-		txtDelay.setText("100");
-		txtDelay.setBounds(96, 6, 93, 23);	
+		txtDelay.setText("1000");
+		txtDelay.setBounds(96, 65, 93, 23);
 		
 		
 		shlSelfadaptiveContractSimulator.addDisposeListener(new DisposeListener() {
@@ -349,18 +327,16 @@ public class SAConSim {
 			System.out.println("Closing SUMO Server...");
 			try {
 				connSumo.close();
-			} catch (InterruptedException IE) {
-				System.out.println("SUMO Server Error: " + IE.getMessage());
-			} catch (IOException IOE) {
-				System.out.println("SUMO Server Error: " + IOE.getMessage());
-			}
+			} catch (InterruptedException | IOException e) {
+				e.printStackTrace();;
+			} 
 			
 			System.out.println("Terminate all ethereum nodes...");
 			
 		}
 		
 		String [] cmd = {"killall", "geth"};				
-		String [] removeCmd = {"rm", "-r", userHomeDir + "/ethereum"};
+		String [] removeCmd = {"rm", "-r", HOME_DIR + "/" + txtEthDir.getText()};
 		
 		try {
 			Process script_exec = Runtime.getRuntime().exec(cmd);
@@ -385,7 +361,7 @@ public class SAConSim {
 		
 		try {
 			
-			FileReader fr = new FileReader(userHomeDir + filePath);
+			FileReader fr = new FileReader(HOME_DIR + filePath);
 			BufferedReader br = new BufferedReader(fr);
 
 			String s;
@@ -406,5 +382,49 @@ public class SAConSim {
 		
 		return Math.ceil(Float.parseFloat(lastTime));
 		
+	}
+	
+	public void nextStep() {
+		int time = connSumo.getCurrentSimTime() / 1000;
+		
+		try {
+			Collection<Vehicle> vehicles = connSumo.getVehicleRepository().getAll().values();
+			for (Vehicle vehicle: vehicles) {
+				
+				if (!vehicleList.contains(vehicle.getID())) {
+					
+					txtLog.append("Running clinet node " + vehicle.getID() + "\n");
+					String [] cmd = {HOME_DIR + '/' + txtRootDir.getText() + "/ethereum/runEthNode.sh", vehicle.getID()};
+					
+					try {
+						Process script_exec = Runtime.getRuntime().exec(cmd);
+						BufferedReader reader = new BufferedReader(new InputStreamReader(script_exec.getInputStream()));
+						
+						String output;
+						while ((output = reader.readLine()) != null) {
+							txtLog.append(output + "\n");
+						}
+						
+						txtLog.append("Successfully running client node!" + "\n");
+						
+					} catch (IOException ioe) {
+						txtLog.append("Error: " + ioe.getMessage() + "\n");
+					}
+					
+					txtLog.append("Vehicle ID " + vehicle.getID() + " is newly entered in the map.\n");								
+					vehicleList.add(vehicle.getID());
+																	
+					TreeItem nodeItem = new TreeItem(trtmNewTreeitem, SWT.NONE);
+					nodeItem.setText("Node#" + vehicle.getID());
+					NodeTree.setTopItem(nodeItem);
+						
+				}										
+				
+				txtLog.append("At time step " + time + ", Vehicle ID " + vehicle.getID() + 
+					"'s location is (" + vehicle.getPosition().getX() + "," + vehicle.getPosition().getY() + ")\n");							
+			}
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
 	}
 }
