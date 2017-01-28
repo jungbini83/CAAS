@@ -1,65 +1,43 @@
 package caas;
 
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.SWT;
-
-import org.eclipse.swt.widgets.Text;
-
-import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.*;
+import org.eclipse.swt.events.*;
+import org.eclipse.swt.graphics.*;
+import org.eclipse.jface.viewers.*;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import java.io.*;
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
-import java.io.BufferedReader;
+import it.polito.appeal.traci.*;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
-import java.util.Collection;
-import java.util.HashSet;
-
-import it.polito.appeal.traci.SumoTraciConnection;
-import it.polito.appeal.traci.Vehicle;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.DisposeEvent;
-
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Tree;
-import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
-
-import org.eclipse.swt.widgets.TreeItem;
-import org.eclipse.swt.widgets.Group;
+import caas.util.SASimUtil;
+import caas.draw.*;
 
 public class SAConSim {
-
-	public final static String HOME_DIR 			= System.getProperty("user.home");
-
+	
+	public SASimUtil saSimUtil = new SASimUtil();
+	
+	public final static String HOME_DIR = System.getProperty("user.home");
+	
 	protected Shell shlSelfadaptiveContractSimulator;
+	public Composite compMain;
 	
 	public TreeItem trtmNewTreeitem;
 	public Tree NodeTree;
-			
 	
 	public static boolean autoStepRunning = false;
 	public static HashSet<String> vehicleList = new HashSet <String>();						// Current Sumo Vehicle List
 		
-	public static SumoTraciConnection connSumo;
+	public SumoTraciConnection connSumo;
 	private Table table;
 	private Text txtLog;
 	private Text txtEthDir;
 	private Text txtRootDir;
 	private Text txtDelay;
 
-	/**
-	 * Launch the application.
-	 * @param args
-	 */
 	public static void main(String[] args) {	
 				
 		try {
@@ -95,10 +73,11 @@ public class SAConSim {
 		shlSelfadaptiveContractSimulator.setText("Self-Adaptive Contract Simulator (test ver.)");
 		shlSelfadaptiveContractSimulator.setLayout(null);
 		
+		compMain = new Composite(shlSelfadaptiveContractSimulator, SWT.NONE);
 		
-		Composite compMain = new Composite(shlSelfadaptiveContractSimulator, SWT.NONE);
 		compMain.setBounds(3, 3, 800, 600);
 		compMain.setBackground(SWTResourceManager.getColor(SWT.COLOR_DARK_GREEN));
+		//compMain.addPaintListener(new DrawVehicleListener());
 		
 		Button btnStartSim = new Button(compMain, SWT.NONE);
 		btnStartSim.setBounds(670, 460, 120, 28);
@@ -152,132 +131,6 @@ public class SAConSim {
 		trtmNewTreeitem.setText("Ethereum");
 		trtmNewTreeitem.setExpanded(true);
 		
-		btnStopSim.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDown(MouseEvent e) {
-				
-				autoStepRunning = false;				
-					
-				terminate();
-				
-				txtLog.append("Closing SUMO Server...\n");
-				txtLog.append("Terminate all ethereum nodes...\n");
-				
-				btnNextStep.setEnabled(false);									// Set Next Step button disable
-				btnAutoStep.setEnabled(false); 									// Set Auto Step button disable
-				btnStartSim.setEnabled(true);									// Set Start button enable
-				btnStopSim.setEnabled(false);									// Set Stop button disable
-				
-				trtmNewTreeitem.removeAll(); 									// Remove all items of ethereum root tree item
-			}
-		});
-		
-		btnNextStep.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDown(MouseEvent e) {
-				
-				btnAutoStep.setEnabled(false); 									// Set Auto step to disable
-				
-				if (connSumo != null) {
-					
-					try {
-					
-						nextStep();						
-						connSumo.nextSimStep();
-						
-					} catch (IOException ioe) {
-						txtLog.append("Sumo Server error: " + ioe.getMessage() + "\n");
-					}
-				}
-				
-			}
-		});
-		
-		btnStartSim.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDown(MouseEvent e) {
-				
-				txtLog.append("Running SUMO Server...\n");
-				connSumo = new SumoTraciConnection(HOME_DIR + '/' + txtRootDir.getText() + "/sumo/map/grid/grid.sumocfg", 12345);
-				
-				try {
-					connSumo.runServer();
-					connSumo.nextSimStep();												// First step is empty
-					
-					txtLog.append("Successfully loading sumo map.\n");
-					txtLog.append("Map bounds are: " + connSumo.queryBounds() + "\n");
-					
-				} catch (Exception ex) {
-					txtLog.append("Sumo Server error: " + ex.getMessage() + "\n");
-				}				
-				
-				txtLog.append("Running Master's node..." + "\n");
-				String [] cmd = {HOME_DIR + '/' + txtRootDir.getText() + "/ethereum/runMasterNode.sh", txtEthDir.getText()};
-				
-				try {
-					Process script_exec = Runtime.getRuntime().exec(cmd);
-					BufferedReader reader = new BufferedReader(new InputStreamReader(script_exec.getInputStream()));
-					
-					String output;
-					while ((output = reader.readLine()) != null) {
-						txtLog.append(output + "\n");
-					}
-					
-					txtLog.append("Successfully running Master's node!" + "\n");
-					
-				} catch (IOException ioe) {
-					txtLog.append("Error: " + ioe.getMessage() + "\n");
-				}
-				
-				btnNextStep.setEnabled(true);									// Set Next Step button enable
-				btnAutoStep.setEnabled(true); 									// Set Auto Step button enable
-				btnStartSim.setEnabled(false);									// Set Start button disable
-				btnStopSim.setEnabled(true);									// Set Stop button enable
-				
-				TreeItem masterNodeItem = new TreeItem(trtmNewTreeitem, SWT.NONE);
-				masterNodeItem.setText("Master Node");
-			}
-		});
-		
-		btnAutoStep.addMouseListener(new MouseAdapter() {
-			
-			public void mouseDown(MouseEvent e) {
-				
-				autoStepRunning = true;
-				
-				int stepTime = (int) getLastDepartTime('/' + txtRootDir.getText() + "/sumo/map/grid/grid.rou.xml");
-				
-				btnNextStep.setEnabled(false); 									// Set Next step button to disable
-				
-				for (int i = 0; i < stepTime; i++) {
-					
-					Display.getDefault().asyncExec(new Runnable() {
-						
-						public void run() {
-							
-							try {
-							
-								if (autoStepRunning) {
-									nextStep();
-									Thread.sleep(Integer.parseInt(txtDelay.getText()));		
-									
-									connSumo.nextSimStep();
-								}
-								
-							} catch (IOException | InterruptedException e) {
-								try {
-									connSumo.close();
-								} catch (IOException | InterruptedException e1) {}
-								
-								e.printStackTrace();
-							}
-						}
-						
-					});
-				}
-			}
-		});
-		
 		txtLog = new Text(shlSelfadaptiveContractSimulator, SWT.BORDER | SWT.READ_ONLY | SWT.V_SCROLL | SWT.MULTI);
 		txtLog.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		txtLog.setBackground(SWTResourceManager.getColor(SWT.COLOR_INFO_BACKGROUND));
@@ -311,13 +164,130 @@ public class SAConSim {
 		txtDelay.setText("1000");
 		txtDelay.setBounds(96, 65, 93, 23);
 		
+		btnStartSim.addMouseListener(new MouseAdapter() {
+			
+			public void mouseDown(MouseEvent e) {
+				
+				int randomNum = ThreadLocalRandom.current().nextInt(10000, 20000);
+				
+				txtLog.append("Running SUMO Server...\n");
+				connSumo = new SumoTraciConnection(HOME_DIR + '/' + txtRootDir.getText() + "/sumo/map/grid/grid.sumocfg", randomNum);
+				
+				try {
+					connSumo.runServer();
+					connSumo.nextSimStep();												// First step is empty
+					
+					txtLog.append("Successfully loading sumo map.\n");
+					txtLog.append("Map bounds are: " + connSumo.queryBounds() + "\n");
+					
+				} catch (Exception ex) {
+					txtLog.append("Sumo Server error: " + ex.getMessage() + "\n");
+				}				
+				
+				txtLog.append("Running Master's node..." + "\n");
+				String [] cmd = {HOME_DIR + '/' + txtRootDir.getText() + "/ethereum/runMasterNode.sh", txtEthDir.getText()};
+				
+				try {
+					Process script_exec = Runtime.getRuntime().exec(cmd);
+					BufferedReader reader = new BufferedReader(new InputStreamReader(script_exec.getInputStream()));
+					
+					String output;
+					while ((output = reader.readLine()) != null) {
+						txtLog.append(output + "\n");
+					}
+					
+				} catch (IOException ioe) {
+					txtLog.append("Error: " + ioe.getMessage() + "\n");
+				}
+				
+				btnNextStep.setEnabled(true);									// Set Next Step button enable
+				btnAutoStep.setEnabled(true); 									// Set Auto Step button enable
+				btnStartSim.setEnabled(false);									// Set Start button disable
+				btnStopSim.setEnabled(true);									// Set Stop button enable
+				
+				TreeItem masterNodeItem = new TreeItem(trtmNewTreeitem, SWT.NONE);
+				masterNodeItem.setText("Master Node");
+			}
+		});
+		
+		btnNextStep.addMouseListener(new MouseAdapter() {
+
+			public void mouseDown(MouseEvent e) {
+				
+				btnAutoStep.setEnabled(false); 									// Set Auto step to disable
+				
+				if (connSumo != null) {
+					try {
+						nextStep();						
+						connSumo.nextSimStep();			
+					} catch (IOException ioe) {
+						txtLog.append("Sumo Server error: " + ioe.getMessage() + "\n");
+					}
+				}
+				
+			}
+		});
+		
+		
+		btnAutoStep.addMouseListener(new MouseAdapter() {
+			
+			public void mouseDown(MouseEvent e) {
+				
+				autoStepRunning = true;
+				
+				int stepTime = (int) saSimUtil.getLastDepartTime(HOME_DIR, '/' + txtRootDir.getText() + "/sumo/map/grid/grid.rou.xml");
+				
+				btnNextStep.setEnabled(false); 									// Set Next step button to disable
+				
+				for (int i = 0; i < stepTime; i++) {
+					
+					Display.getDefault().asyncExec(new Runnable() {
+						
+						public void run() {
+							
+							try {
+								if (autoStepRunning) {
+									nextStep();
+									Thread.sleep(Integer.parseInt(txtDelay.getText()));		
+									
+									connSumo.nextSimStep();
+								}
+							} catch (IOException | InterruptedException e) {
+								try {
+									connSumo.close();
+								} catch (IOException | InterruptedException e1) {}
+								
+								e.printStackTrace();
+							}
+						}
+						
+					});
+				}
+			}
+		});
+		
+		btnStopSim.addMouseListener(new MouseAdapter() {
+
+			public void mouseDown(MouseEvent e) {
+				
+				autoStepRunning = false;				
+					
+				terminate();
+								
+				btnNextStep.setEnabled(false);									// Set Next Step button disable
+				btnAutoStep.setEnabled(false); 									// Set Auto Step button disable
+				btnStartSim.setEnabled(true);									// Set Start button enable
+				btnStopSim.setEnabled(false);									// Set Stop button disable
+				
+				trtmNewTreeitem.removeAll(); 									// Remove all items of ethereum root tree item
+			}
+		});
 		
 		shlSelfadaptiveContractSimulator.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent arg0) {				
 				terminate();			
 			}
 		});
-		
 	}
 	
 	public void terminate() {
@@ -332,7 +302,6 @@ public class SAConSim {
 			} 
 			
 			System.out.println("Terminate all ethereum nodes...");
-			
 		}
 		
 		String [] cmd = {"killall", "geth"};				
@@ -355,45 +324,41 @@ public class SAConSim {
 		}	
 	}
 	
-	public double getLastDepartTime(String filePath) {
-		
-		String lastTime = "";
-		
-		try {
-			
-			FileReader fr = new FileReader(HOME_DIR + filePath);
-			BufferedReader br = new BufferedReader(fr);
-
-			String s;
-			String lastVehicle = "";
-			while((s = br.readLine()) != null) {
-				if (s.indexOf("<vehicle id=")>=0)
-					lastVehicle = s;
-			}
-			
-			lastTime = lastVehicle.substring(lastVehicle.indexOf("depart=")+8, lastVehicle.indexOf("\"", lastVehicle.indexOf("depart=")+8));
-			
-			br.close();
-			fr.close();
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		return Math.ceil(Float.parseFloat(lastTime));
-		
-	}
+	
 	
 	public void nextStep() {
+		
+		
+		
+		//compMain.redraw();
+		
 		int time = connSumo.getCurrentSimTime() / 1000;
 		
 		try {
 			Collection<Vehicle> vehicles = connSumo.getVehicleRepository().getAll().values();
+			
 			for (Vehicle vehicle: vehicles) {
+				
+//				compMain.addPaintListener(new PaintListener() {
+//					public void paintControl(PaintEvent e) {
+//						try {
+//							e.gc.drawOval((int)vehicle.getPosition().getX(), (int)vehicle.getPosition().getY(), 10, 10);
+//						} catch (IOException e1) {
+//							// TODO Auto-generated catch block
+//							e1.printStackTrace();
+//						}
+//					}
+//				});
+//				
+//				compMain.redraw();
 				
 				if (!vehicleList.contains(vehicle.getID())) {
 					
-					txtLog.append("Running clinet node " + vehicle.getID() + "\n");
+					txtLog.append("Vehicle ID " + vehicle.getID() + " is newly entered in the map.\n");				
+					txtLog.append("At time step " + time + ", Vehicle ID " + vehicle.getID() + 
+						"'s location is (" + vehicle.getPosition().getX() + "," + vehicle.getPosition().getY() + ")\n");	
+					vehicleList.add(vehicle.getID());
+					
 					String [] cmd = {HOME_DIR + '/' + txtRootDir.getText() + "/ethereum/runEthNode.sh", vehicle.getID()};
 					
 					try {
@@ -405,23 +370,13 @@ public class SAConSim {
 							txtLog.append(output + "\n");
 						}
 						
-						txtLog.append("Successfully running client node!" + "\n");
-						
 					} catch (IOException ioe) {
 						txtLog.append("Error: " + ioe.getMessage() + "\n");
 					}
-					
-					txtLog.append("Vehicle ID " + vehicle.getID() + " is newly entered in the map.\n");								
-					vehicleList.add(vehicle.getID());
-																	
+									
 					TreeItem nodeItem = new TreeItem(trtmNewTreeitem, SWT.NONE);
 					nodeItem.setText("Node#" + vehicle.getID());
-					NodeTree.setTopItem(nodeItem);
-						
-				}										
-				
-				txtLog.append("At time step " + time + ", Vehicle ID " + vehicle.getID() + 
-					"'s location is (" + vehicle.getPosition().getX() + "," + vehicle.getPosition().getY() + ")\n");							
+				}																
 			}
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
