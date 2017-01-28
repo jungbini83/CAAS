@@ -19,6 +19,8 @@ import caas.draw.*;
 public class SAConSim {
 	
 	public SASimUtil saSimUtil = new SASimUtil();
+	public double xPosWeight = 0;
+	public double yPosWeight = 0;
 	
 	public final static String HOME_DIR = System.getProperty("user.home");
 	
@@ -180,6 +182,9 @@ public class SAConSim {
 					txtLog.append("Successfully loading sumo map.\n");
 					txtLog.append("Map bounds are: " + connSumo.queryBounds() + "\n");
 					
+					xPosWeight = compMain.getBounds().width / connSumo.queryBounds().getWidth();
+					yPosWeight = compMain.getBounds().height / connSumo.queryBounds().getHeight();
+					
 				} catch (Exception ex) {
 					txtLog.append("Sumo Server error: " + ex.getMessage() + "\n");
 				}				
@@ -294,6 +299,8 @@ public class SAConSim {
 		
 		if (connSumo != null) {
 			
+			autoStepRunning = false;
+			
 			System.out.println("Closing SUMO Server...");
 			try {
 				connSumo.close();
@@ -327,11 +334,7 @@ public class SAConSim {
 	
 	
 	public void nextStep() {
-		
-		
-		
-		//compMain.redraw();
-		
+
 		int time = connSumo.getCurrentSimTime() / 1000;
 		
 		try {
@@ -339,18 +342,18 @@ public class SAConSim {
 			
 			for (Vehicle vehicle: vehicles) {
 				
-//				compMain.addPaintListener(new PaintListener() {
-//					public void paintControl(PaintEvent e) {
-//						try {
-//							e.gc.drawOval((int)vehicle.getPosition().getX(), (int)vehicle.getPosition().getY(), 10, 10);
-//						} catch (IOException e1) {
-//							// TODO Auto-generated catch block
-//							e1.printStackTrace();
-//						}
-//					}
-//				});
-//				
-//				compMain.redraw();
+				compMain.addPaintListener(new PaintListener() {
+					public void paintControl(PaintEvent e) {
+						try {
+							e.gc.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_BLUE)); 
+							e.gc.fillOval((int)(vehicle.getPosition().getX() * xPosWeight)-10, (int)(vehicle.getPosition().getY() * yPosWeight)-10, 20, 20);
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+					}
+				});
+				
+				compMain.redraw();
 				
 				if (!vehicleList.contains(vehicle.getID())) {
 					

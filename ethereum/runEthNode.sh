@@ -31,7 +31,7 @@ echo ${accountAddr:10:40} >> ~/$root/data/$dd/account 	# save account address
 
 # 2. running ethereum node demon
 geth --datadir ~/$root/data/$dd init ~/$root/genesis.json
-nohup geth --datadir ~/$root/data/$dd --rpc --rpcport "85${dd}" --rpcapi "admin,db,eth,debug,miner,net,shh,txpool,personal,web3" \
+nohup geth --datadir ~/$root/data/$dd --rpc --rpcport "85${dd}" --rpcapi "admin,eth,miner,personal" \
 --port "30${dd}" --unlock=${accountAddr:10:40} --password=<(echo -n $dd) --nodiscover > ~/$root/data/$dd/log 2>&1 &
 
 # 3. save this node's enode address

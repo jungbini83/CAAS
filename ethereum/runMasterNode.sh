@@ -47,11 +47,11 @@ echo "$genesisContent" >> ~/${root}/genesis.json
 
 # 3. running master node demon
 geth --datadir ~/$root/data/master init ~/$root/genesis.json
-nohup geth --datadir ~/$root/data/master --rpc --rpcport "9430" --rpcapi "admin,db,eth,debug,miner,net,shh,txpool,personal,web3" \
+nohup geth --datadir ~/$root/data/master --rpc --rpcport "9430" --rpcapi "admin,eth,miner,personal" \
 --port 4430 --unlock=${accountAddr:10:40} --password=<(echo -n master) --nodiscover --mine > ~/$root/data/master/log 2>&1 &
 
 # 4. save master node's enode address
-sleep 1			# sleep 1 sec for waiting geth client establishment
+sleep 1
 geth --exec 'admin.nodeInfo.enode' attach http://localhost:9430 > ~/$root/data/master/enode
 enodeAddr=$(cat ~/$root/data/master/enode)
 echo "Master's enode address: "$enodeAddr
