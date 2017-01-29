@@ -16,24 +16,28 @@ import it.polito.appeal.traci.*;
 import caas.util.SASimUtil;
 import caas.draw.*;
 
-public class SAConSim {
+public class SAConSimulator {
 	
-	public SASimUtil saSimUtil = new SASimUtil();
-	public double xPosWeight = 0;
-	public double yPosWeight = 0;
+	// General variables
+	public final String HOME_DIR = System.getProperty("user.home");
 	
-	public final static String HOME_DIR = System.getProperty("user.home");
-	
-	protected Shell shlSelfadaptiveContractSimulator;
-	public Composite compMain;
-	
-	public TreeItem trtmNewTreeitem;
-	public Tree NodeTree;
+	public SASimUtil saSimUtil = new SASimUtil();											// Utility class of this simulator
 	
 	public static boolean autoStepRunning = false;
+	public double xPosWeight;
+	public double yPosWeight;
+	
+	// SUMO related variables
 	public static HashSet<String> vehicleList = new HashSet <String>();						// Current Sumo Vehicle List
-		
+	
 	public SumoTraciConnection connSumo;
+	
+	// GUI related variables
+	protected Shell shlSelfadaptiveContractSimulator;
+	public Display display = Display.getDefault();
+	public Composite compMain;
+	public TreeItem trtmNewTreeitem;
+	public Tree NodeTree;
 	private Table table;
 	private Text txtLog;
 	private Text txtEthDir;
@@ -43,18 +47,15 @@ public class SAConSim {
 	public static void main(String[] args) {	
 				
 		try {
-			SAConSim window = new SAConSim();
+			SAConSimulator window = new SAConSimulator();
 			window.open();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	/**
-	 * Open the window.
-	 */
 	public void open() {
-		Display display = Display.getDefault();
+		display = Display.getDefault();
 		createContents();
 		shlSelfadaptiveContractSimulator.open();
 		shlSelfadaptiveContractSimulator.layout();
@@ -65,9 +66,6 @@ public class SAConSim {
 		}
 	}
 	
-	/**
-	 * Create contents of the window.
-	 */
 	protected void createContents() {
 		
 		shlSelfadaptiveContractSimulator = new Shell();
@@ -76,10 +74,8 @@ public class SAConSim {
 		shlSelfadaptiveContractSimulator.setLayout(null);
 		
 		compMain = new Composite(shlSelfadaptiveContractSimulator, SWT.NONE);
-		
 		compMain.setBounds(3, 3, 800, 600);
 		compMain.setBackground(SWTResourceManager.getColor(SWT.COLOR_DARK_GREEN));
-		//compMain.addPaintListener(new DrawVehicleListener());
 		
 		Button btnStartSim = new Button(compMain, SWT.NONE);
 		btnStartSim.setBounds(670, 460, 120, 28);
@@ -223,7 +219,11 @@ public class SAConSim {
 				
 				if (connSumo != null) {
 					try {
-						nextStep();						
+						Collection<Vehicle> vehicles = connSumo.getVehicleRepository().getAll().values();
+						
+						for (Vehicle vehicle: vehicles) {
+							nextStep(vehicle);		
+						}
 						connSumo.nextSimStep();			
 					} catch (IOException ioe) {
 						txtLog.append("Sumo Server error: " + ioe.getMessage() + "\n");
@@ -238,35 +238,36 @@ public class SAConSim {
 			
 			public void mouseDown(MouseEvent e) {
 				
-				autoStepRunning = true;
-				
 				int stepTime = (int) saSimUtil.getLastDepartTime(HOME_DIR, '/' + txtRootDir.getText() + "/sumo/map/grid/grid.rou.xml");
 				
+				autoStepRunning = true;
 				btnNextStep.setEnabled(false); 									// Set Next step button to disable
 				
 				for (int i = 0; i < stepTime; i++) {
-					
-					Display.getDefault().asyncExec(new Runnable() {
+				
+					display.asyncExec(new Runnable() {
 						
 						public void run() {
-							
-							try {
-								if (autoStepRunning) {
-									nextStep();
-									Thread.sleep(Integer.parseInt(txtDelay.getText()));		
-									
-									connSumo.nextSimStep();
-								}
-							} catch (IOException | InterruptedException e) {
-								try {
-									connSumo.close();
-								} catch (IOException | InterruptedException e1) {}
-								
-								e.printStackTrace();
-							}
-						}
 						
-					});
+							if (autoStepRunning) {
+			
+								try {
+	
+									Collection<Vehicle> vehicles = connSumo.getVehicleRepository().getAll().values();
+									for (Vehicle vehicle: vehicles) {
+										nextStep(vehicle);										
+									}
+
+									Thread.sleep(Integer.parseInt(txtDelay.getText()));
+									connSumo.nextSimStep(); 
+									 
+								} catch (NumberFormatException | InterruptedException | IllegalStateException | IOException e) {
+									e.printStackTrace();
+								}
+
+							} 
+						}
+					});				
 				}
 			}
 		});
@@ -275,8 +276,14 @@ public class SAConSim {
 
 			public void mouseDown(MouseEvent e) {
 				
-				autoStepRunning = false;				
-					
+				autoStepRunning = false;	
+				
+				try {
+					Thread.sleep(Integer.parseInt(txtDelay.getText()));
+				} catch (NumberFormatException | InterruptedException e1) {
+					e1.printStackTrace();
+				}	
+				
 				terminate();
 								
 				btnNextStep.setEnabled(false);									// Set Next Step button disable
@@ -331,58 +338,65 @@ public class SAConSim {
 		}	
 	}
 	
-	
-	
-	public void nextStep() {
+	public void nextStep(Vehicle vehicle) {
 
-		int time = connSumo.getCurrentSimTime() / 1000;
-		
-		try {
-			Collection<Vehicle> vehicles = connSumo.getVehicleRepository().getAll().values();
+		if (!vehicleList.contains(vehicle.getID())) {
 			
-			for (Vehicle vehicle: vehicles) {
-				
-				compMain.addPaintListener(new PaintListener() {
-					public void paintControl(PaintEvent e) {
-						try {
-							e.gc.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_BLUE)); 
-							e.gc.fillOval((int)(vehicle.getPosition().getX() * xPosWeight)-10, (int)(vehicle.getPosition().getY() * yPosWeight)-10, 20, 20);
-						} catch (IOException e1) {
-							e1.printStackTrace();
-						}
-					}
-				});
-				
-				compMain.redraw();
-				
-				if (!vehicleList.contains(vehicle.getID())) {
-					
-					txtLog.append("Vehicle ID " + vehicle.getID() + " is newly entered in the map.\n");				
-					txtLog.append("At time step " + time + ", Vehicle ID " + vehicle.getID() + 
-						"'s location is (" + vehicle.getPosition().getX() + "," + vehicle.getPosition().getY() + ")\n");	
-					vehicleList.add(vehicle.getID());
-					
-					String [] cmd = {HOME_DIR + '/' + txtRootDir.getText() + "/ethereum/runEthNode.sh", vehicle.getID()};
-					
-					try {
-						Process script_exec = Runtime.getRuntime().exec(cmd);
-						BufferedReader reader = new BufferedReader(new InputStreamReader(script_exec.getInputStream()));
-						
-						String output;
-						while ((output = reader.readLine()) != null) {
-							txtLog.append(output + "\n");
-						}
-						
-					} catch (IOException ioe) {
-						txtLog.append("Error: " + ioe.getMessage() + "\n");
-					}
-									
-					TreeItem nodeItem = new TreeItem(trtmNewTreeitem, SWT.NONE);
-					nodeItem.setText("Node#" + vehicle.getID());
-				}																
-			}
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
+			txtLog.append("Vehicle ID " + vehicle.getID() + " is newly entered in the map.\n");				
+			vehicleList.add(vehicle.getID());
+			
+			Thread runEthClient = new RunEthereum(HOME_DIR + '/' + txtRootDir.getText(), vehicle.getID(), txtLog);
+			runEthClient.start();
+							
+			TreeItem nodeItem = new TreeItem(trtmNewTreeitem, SWT.NONE);
+			nodeItem.setText("Node#" + vehicle.getID());
 		}
+		
+		compMain.addPaintListener(new PaintListener() {
+			public void paintControl(PaintEvent e) {
+				try {
+					e.gc.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_BLUE)); 
+					
+					if (autoStepRunning)
+						e.gc.fillOval((int)(vehicle.getPosition().getX() * xPosWeight)-10, (int)(vehicle.getPosition().getY() * yPosWeight)-10, 20, 20);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		
+		compMain.redraw();
 	}
+}
+
+class RunEthereum extends Thread {
+	
+	private String ethPath;
+	private String nodeID;
+	private Text txtLog;
+	
+	public RunEthereum(String ethPath, String nodeID, Text txtLog) {
+		this.ethPath = ethPath;
+		this.nodeID = nodeID;
+		this.txtLog = txtLog;
+	}
+	
+	public void run() {
+		String [] cmd = {ethPath + "/ethereum/runEthNode.sh", nodeID};
+		
+		Process script_exec;
+		try {
+			script_exec = Runtime.getRuntime().exec(cmd);
+			BufferedReader reader = new BufferedReader(new InputStreamReader(script_exec.getInputStream()));
+			
+//			String output;
+//			while ((output = reader.readLine()) != null) {
+//				txtLog.append(output + "\n");
+//			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 }

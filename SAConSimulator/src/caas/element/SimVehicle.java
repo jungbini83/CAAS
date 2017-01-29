@@ -1,4 +1,4 @@
-package caas;
+package caas.element;
 
 public class SimVehicle {
 	
