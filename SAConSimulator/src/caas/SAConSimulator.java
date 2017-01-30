@@ -9,12 +9,13 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 import java.io.*;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import it.polito.appeal.traci.*;
 
 import caas.util.SASimUtil;
-import caas.draw.*;
+import caas.element.SimVehicle;
 
 public class SAConSimulator {
 	
@@ -22,15 +23,15 @@ public class SAConSimulator {
 	public final String HOME_DIR = System.getProperty("user.home");
 	
 	public SASimUtil saSimUtil = new SASimUtil();											// Utility class of this simulator
-	
+
 	public static boolean autoStepRunning = false;
 	public double xPosWeight;
 	public double yPosWeight;
 	
 	// SUMO related variables
-	public static HashSet<String> vehicleList = new HashSet <String>();						// Current Sumo Vehicle List
+	public static ArrayList<SimVehicle> simVehicles = new ArrayList<SimVehicle>();				// Current Sumo Vehicle List
 	
-	public SumoTraciConnection connSumo;
+	public static SumoTraciConnection connSumo;
 	
 	// GUI related variables
 	protected Shell shlSelfadaptiveContractSimulator;
@@ -43,6 +44,8 @@ public class SAConSimulator {
 	private Text txtEthDir;
 	private Text txtRootDir;
 	private Text txtDelay;
+	private Text txtPeerDistance;
+	private Text txtNumOfPeers;
 
 	public static void main(String[] args) {	
 				
@@ -68,14 +71,14 @@ public class SAConSimulator {
 	
 	protected void createContents() {
 		
-		shlSelfadaptiveContractSimulator = new Shell();
-		shlSelfadaptiveContractSimulator.setSize(1024, 768);
+		shlSelfadaptiveContractSimulator = new Shell(SWT.SHELL_TRIM & (~SWT.RESIZE));
+		shlSelfadaptiveContractSimulator.setSize(1049, 768);
 		shlSelfadaptiveContractSimulator.setText("Self-Adaptive Contract Simulator (test ver.)");
 		shlSelfadaptiveContractSimulator.setLayout(null);
 		
 		compMain = new Composite(shlSelfadaptiveContractSimulator, SWT.NONE);
 		compMain.setBounds(3, 3, 800, 600);
-		compMain.setBackground(SWTResourceManager.getColor(SWT.COLOR_DARK_GREEN));
+		compMain.setBackground(SWTResourceManager.getColor(107, 142, 35));
 		
 		Button btnStartSim = new Button(compMain, SWT.NONE);
 		btnStartSim.setBounds(670, 460, 120, 28);
@@ -104,10 +107,10 @@ public class SAConSimulator {
 		
 		Group grpNodeProperties = new Group(shlSelfadaptiveContractSimulator, SWT.NONE);
 		grpNodeProperties.setText("Node & Properties");
-		grpNodeProperties.setBounds(809, 263, 201, 469);
+		grpNodeProperties.setBounds(809, 263, 228, 469);
 		
 		table = new Table(grpNodeProperties, SWT.BORDER | SWT.FULL_SELECTION);
-		table.setBounds(10, 202, 179, 241);
+		table.setBounds(10, 202, 206, 241);
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 		
@@ -122,7 +125,7 @@ public class SAConSimulator {
 		TreeViewer treeViewer = new TreeViewer(grpNodeProperties, SWT.BORDER);
 		
 		NodeTree = treeViewer.getTree();
-		NodeTree.setBounds(10, 10, 179, 186);
+		NodeTree.setBounds(10, 10, 206, 186);
 		NodeTree.setLinesVisible(true);
 		
 		trtmNewTreeitem = new TreeItem(NodeTree, SWT.NONE);
@@ -136,23 +139,25 @@ public class SAConSimulator {
 		
 		Group grpSimulationSetting = new Group(shlSelfadaptiveContractSimulator, SWT.NONE);
 		grpSimulationSetting.setText("Simulation Settings");
-		grpSimulationSetting.setBounds(809, 3, 201, 254);
+		grpSimulationSetting.setBounds(809, 3, 228, 254);
 		
 		Label lblEthereumDir = new Label(grpSimulationSetting, SWT.NONE);
 		lblEthereumDir.setBounds(10, 40, 80, 15);
 		lblEthereumDir.setText("Ethereum Dir:");
 		
 		txtEthDir = new Text(grpSimulationSetting, SWT.BORDER);
+		txtEthDir.setEnabled(false);
 		txtEthDir.setText("ethereum");
-		txtEthDir.setBounds(96, 36, 93, 23);	
+		txtEthDir.setBounds(114, 36, 100, 23);	
 		
 		Label lblRootDir = new Label(grpSimulationSetting, SWT.NONE);
 		lblRootDir.setText("Root Dir:");
 		lblRootDir.setBounds(10, 10, 80, 15);
 		
 		txtRootDir = new Text(grpSimulationSetting, SWT.BORDER);
+		txtRootDir.setEnabled(false);
 		txtRootDir.setText("caas");
-		txtRootDir.setBounds(96, 6, 93, 23);
+		txtRootDir.setBounds(114, 6, 100, 23);
 		
 		Label label = new Label(grpSimulationSetting, SWT.NONE);
 		label.setText("Delay(ms):");
@@ -160,7 +165,23 @@ public class SAConSimulator {
 		
 		txtDelay = new Text(grpSimulationSetting, SWT.BORDER);
 		txtDelay.setText("1000");
-		txtDelay.setBounds(96, 65, 93, 23);
+		txtDelay.setBounds(114, 65, 100, 23);
+		
+		Label lblPeerDistance = new Label(grpSimulationSetting, SWT.NONE);
+		lblPeerDistance.setText("Peer Distance(m):");
+		lblPeerDistance.setBounds(10, 97, 106, 15);
+		
+		txtPeerDistance = new Text(grpSimulationSetting, SWT.BORDER);
+		txtPeerDistance.setText("100");
+		txtPeerDistance.setBounds(114, 94, 100, 23);
+		
+		Label lblNumOfPeers = new Label(grpSimulationSetting, SWT.NONE);
+		lblNumOfPeers.setText("# of Peers:");
+		lblNumOfPeers.setBounds(10, 126, 106, 15);
+		
+		txtNumOfPeers = new Text(grpSimulationSetting, SWT.BORDER);
+		txtNumOfPeers.setText("2");
+		txtNumOfPeers.setBounds(114, 122, 100, 23);
 		
 		btnStartSim.addMouseListener(new MouseAdapter() {
 			
@@ -216,14 +237,27 @@ public class SAConSimulator {
 			public void mouseDown(MouseEvent e) {
 				
 				btnAutoStep.setEnabled(false); 									// Set Auto step to disable
+				autoStepRunning = true;
 				
 				if (connSumo != null) {
 					try {
 						Collection<Vehicle> vehicles = connSumo.getVehicleRepository().getAll().values();
 						
-						for (Vehicle vehicle: vehicles) {
-							nextStep(vehicle);		
+						// 1. Running Ethereum client and draw nodes to main composite
+						for (Vehicle vehicle: vehicles)
+							runEthereumClient(vehicle);
+						
+						// 2. Draw Vehicles and network lines
+						drawVehicles(simVehicles);
+						
+						// 2. Print connected Nodes...
+						for (SimVehicle simVehicle: simVehicles) {
+							System.out.print("Node #" + simVehicle.getID() + "'s connected Nodes: { ");
+							for (String nodeID: simVehicle.getConnectedNodes()) 
+								System.out.print(nodeID + " ");
+							System.out.println("}");
 						}
+						
 						connSumo.nextSimStep();			
 					} catch (IOException ioe) {
 						txtLog.append("Sumo Server error: " + ioe.getMessage() + "\n");
@@ -252,12 +286,17 @@ public class SAConSimulator {
 							if (autoStepRunning) {
 			
 								try {
-	
-									Collection<Vehicle> vehicles = connSumo.getVehicleRepository().getAll().values();
-									for (Vehicle vehicle: vehicles) {
-										nextStep(vehicle);										
-									}
 
+									Collection<Vehicle> vehicles = connSumo.getVehicleRepository().getAll().values();
+									
+									// 1. Running Ethereum client
+									for (Vehicle vehicle: vehicles)
+										runEthereumClient(vehicle);
+									
+									// 2. Draw Vehicles and network lines
+									drawVehicles(simVehicles);
+
+									// 3. Wait and go to next step
 									Thread.sleep(Integer.parseInt(txtDelay.getText()));
 									connSumo.nextSimStep(); 
 									 
@@ -284,7 +323,11 @@ public class SAConSimulator {
 					e1.printStackTrace();
 				}	
 				
-				terminate();
+				try {
+					terminate();
+				} catch (InterruptedException | IOException e1) {
+					e1.printStackTrace();
+				}
 								
 				btnNextStep.setEnabled(false);									// Set Next Step button disable
 				btnAutoStep.setEnabled(false); 									// Set Auto Step button disable
@@ -295,76 +338,127 @@ public class SAConSimulator {
 			}
 		});
 		
-		shlSelfadaptiveContractSimulator.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent arg0) {				
-				terminate();			
+		shlSelfadaptiveContractSimulator.addDisposeListener(new DisposeListener()  {
+			public void widgetDisposed(DisposeEvent arg0)  {				
+				try {
+					terminate();
+				} catch (InterruptedException | IOException e) {
+					e.printStackTrace();
+				}			
 			}
 		});
 	}
 	
-	public void terminate() {
+	public void terminate() throws InterruptedException, IOException {
 		
 		if (connSumo != null) {
-			
+			connSumo.close();
 			autoStepRunning = false;
-			
 			System.out.println("Closing SUMO Server...");
-			try {
-				connSumo.close();
-			} catch (InterruptedException | IOException e) {
-				e.printStackTrace();;
-			} 
-			
-			System.out.println("Terminate all ethereum nodes...");
 		}
+		
+		simVehicles = new ArrayList<SimVehicle>();
+		
+		for (Control subCompObj: compMain.getChildren())
+			if (!(subCompObj instanceof Button))
+				subCompObj.dispose();
+		compMain.redraw();
+		
+		System.out.println("Terminate all ethereum nodes...");
 		
 		String [] cmd = {"killall", "geth"};				
 		String [] removeCmd = {"rm", "-r", HOME_DIR + "/" + txtEthDir.getText()};
 		
-		try {
-			Process script_exec = Runtime.getRuntime().exec(cmd);
-			BufferedReader reader = new BufferedReader(new InputStreamReader(script_exec.getInputStream()));
-			
-			String output;
-			while ((output = reader.readLine()) != null) {
-				System.out.println(output);
-			}
-			
-			Runtime.getRuntime().exec(removeCmd);
-			System.out.println("Successfully terminated!");
-			
-		} catch (IOException ioe) {
-			System.out.println("Error: " + ioe.getMessage());
-		}	
-	}
-	
-	public void nextStep(Vehicle vehicle) {
-
-		if (!vehicleList.contains(vehicle.getID())) {
-			
-			txtLog.append("Vehicle ID " + vehicle.getID() + " is newly entered in the map.\n");				
-			vehicleList.add(vehicle.getID());
-			
-			Thread runEthClient = new RunEthereum(HOME_DIR + '/' + txtRootDir.getText(), vehicle.getID(), txtLog);
-			runEthClient.start();
-							
-			TreeItem nodeItem = new TreeItem(trtmNewTreeitem, SWT.NONE);
-			nodeItem.setText("Node#" + vehicle.getID());
+		Process script_exec = Runtime.getRuntime().exec(cmd);
+		BufferedReader reader = new BufferedReader(new InputStreamReader(script_exec.getInputStream()));
+		
+		String output;
+		while ((output = reader.readLine()) != null) {
+			System.out.println(output);
 		}
 		
+		Runtime.getRuntime().exec(removeCmd);
+		System.out.println("Successfully terminated!");
+	}
+	
+	public void runEthereumClient(Vehicle vehicle) throws IOException {
+
+		// Is this node newly entered in the node?
+		boolean isExistingVehicle = false;
+		for (SimVehicle simVehicle: simVehicles) {
+			if (simVehicle.getID() == vehicle.getID()) {
+				isExistingVehicle = true;		
+				simVehicle.setXpos(vehicle.getPosition().getX());
+				simVehicle.setYpos(vehicle.getPosition().getY());
+				simVehicle.findNearNodes(simVehicles);
+			}
+		}
+		
+		// Find newly entered vehicle and running ethereum client
+		if (!isExistingVehicle) {
+			
+			txtLog.append("Vehicle ID " + vehicle.getID() + " is newly entered in the map.\n");				
+
+			// update Newly entered node to Tree Update
+			TreeItem nodeItem = new TreeItem(trtmNewTreeitem, SWT.NONE);
+			nodeItem.setText("Node#" + vehicle.getID());
+			
+			// running new ethereum node
+			Thread runEthClient = new RunEthereum(HOME_DIR + '/' + txtRootDir.getText(), vehicle.getID());
+			runEthClient.start();
+			
+			// add Newly entered node to simVehicle
+			SimVehicle newVehicleNode = new SimVehicle(vehicle.getID(), vehicle.getPosition().getX(), vehicle.getPosition().getY(), txtPeerDistance.getText(), HOME_DIR + '/' + txtRootDir.getText(), txtEthDir.getText());
+			simVehicles.add(newVehicleNode);
+			newVehicleNode.findNearNodes(simVehicles);
+		}
+	}
+	
+	public void drawVehicles(ArrayList <SimVehicle> simVehicles) {
+		// Draw Vehicle Circle in Main composite
 		compMain.addPaintListener(new PaintListener() {
 			public void paintControl(PaintEvent e) {
-				try {
-					e.gc.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_BLUE)); 
+				
+				e.gc.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_BLUE)); 
+				e.gc.setForeground(display.getSystemColor(SWT.COLOR_YELLOW)); 
+				
+				Font font = new Font(display,"Arial",9,SWT.BOLD); 
+				e.gc.setFont(font);
+				
+				for (SimVehicle simVehicle: simVehicles) {
 					
-					if (autoStepRunning)
-						e.gc.fillOval((int)(vehicle.getPosition().getX() * xPosWeight)-10, (int)(vehicle.getPosition().getY() * yPosWeight)-10, 20, 20);
-				} catch (IOException e1) {
-					e1.printStackTrace();
+					// Draw Network Lines
+					List <String> peerNodeList = simVehicle.getConnectedNodes();
+					for (String peerNode: peerNodeList) {
+						
+						SimVehicle targetNode = null;
+						for (SimVehicle findNode: simVehicles)
+							if (findNode.getID() == peerNode)
+								targetNode = findNode;
+								
+						if (simVehicle.getID() != peerNode) {
+							try {
+								e.gc.drawLine((int)(simVehicle.getXpos()*xPosWeight)+20, (int)(simVehicle.getYpos()*yPosWeight)+20,
+											(int)(targetNode.getXpos()*xPosWeight)+20, (int)(targetNode.getYpos()*yPosWeight)+20);
+							} catch (IOException e1) {
+								e1.printStackTrace();
+							}
+						}
+					}
+					
+					int strWith = e.gc.stringExtent(simVehicle.getID()).x;
+					
+					if (autoStepRunning) {			
+						try {
+							e.gc.fillOval((int)(simVehicle.getXpos() * xPosWeight)+10, (int)(simVehicle.getYpos() * yPosWeight)+10, 20, 20);
+							e.gc.drawText(simVehicle.getID(), (int)(simVehicle.getXpos() * xPosWeight)+(20-(strWith/2)), (int)(simVehicle.getYpos() * yPosWeight)+13);		
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+					}
 				}
-			}
+			 }
 		});
-		
 		compMain.redraw();
 	}
 }
@@ -373,26 +467,17 @@ class RunEthereum extends Thread {
 	
 	private String ethPath;
 	private String nodeID;
-	private Text txtLog;
 	
-	public RunEthereum(String ethPath, String nodeID, Text txtLog) {
+	public RunEthereum(String ethPath, String nodeID) {
 		this.ethPath = ethPath;
 		this.nodeID = nodeID;
-		this.txtLog = txtLog;
 	}
 	
 	public void run() {
 		String [] cmd = {ethPath + "/ethereum/runEthNode.sh", nodeID};
 		
-		Process script_exec;
 		try {
-			script_exec = Runtime.getRuntime().exec(cmd);
-			BufferedReader reader = new BufferedReader(new InputStreamReader(script_exec.getInputStream()));
-			
-//			String output;
-//			while ((output = reader.readLine()) != null) {
-//				txtLog.append(output + "\n");
-//			}
+			Runtime.getRuntime().exec(cmd);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

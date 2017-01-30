@@ -29,15 +29,18 @@ if [ $sn == 'master' ]; then
 else
 	snd=$(printf "%02d" $sn)		# change source node number to node ID like 01, 02, 03...
 	rpcport=85$snd
+fi
 shift
 pn=$1
 if [ $pn == 'master' ]; then
 	pnd='master'
 else
 	pnd=$(printf "%02d" $pn)		# change peer node number to node ID like 01, 02, 03...
+fi
 
 # 1. read enode of peer node
 snEnode=$(cat ~/${root}/data/${pnd}/enode)
 
 # 2. remove peer node from source node
+echo -n 'Removing node('$pnd') to node('$snd') result: '
 geth --exec "admin.removePeer($snEnode)" attach http://localhost:$rpcport

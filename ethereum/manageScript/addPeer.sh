@@ -4,7 +4,6 @@
 # <rootDir>: root directory of nodes
 # <srcNode>: the node that want to connect targetNode
 # <peerNode>: the peer node that will be connected to <srcNode>
-# <srcNode> regist <peerNode> as a kind of its peer nodes
 if [ "$#" -eq 2 ]; then
 
 	if [ -f ../"root.cfg" ]; then
