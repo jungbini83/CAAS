@@ -164,7 +164,7 @@ public class SAConSimulator {
 		label.setBounds(10, 69, 80, 15);
 		
 		txtDelay = new Text(grpSimulationSetting, SWT.BORDER);
-		txtDelay.setText("1000");
+		txtDelay.setText("500");
 		txtDelay.setBounds(114, 65, 100, 23);
 		
 		Label lblPeerDistance = new Label(grpSimulationSetting, SWT.NONE);
