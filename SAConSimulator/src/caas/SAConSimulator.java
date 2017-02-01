@@ -33,9 +33,14 @@ public class SAConSimulator {
 	
 	public static SumoTraciConnection connSumo;
 	
+	public String selType;
+	public String mapPath;
+	
 	// GUI related variables
 	protected Shell shlSelfadaptiveContractSimulator;
 	public Display display = Display.getDefault();
+	public SelectMapDialog selMapDialog;
+	
 	public Composite compMain;
 	public TreeItem trtmNewTreeitem;
 	public Tree NodeTree;
@@ -45,7 +50,6 @@ public class SAConSimulator {
 	private Text txtRootDir;
 	private Text txtDelay;
 	private Text txtPeerDistance;
-	private Text txtNumOfPeers;
 
 	public static void main(String[] args) {	
 				
@@ -59,7 +63,19 @@ public class SAConSimulator {
 
 	public void open() {
 		display = Display.getDefault();
+		
 		createContents();
+		
+		selMapDialog = new SelectMapDialog(shlSelfadaptiveContractSimulator, SWT.BORDER | SWT.CLOSE | SWT.TITLE);
+		selType = selMapDialog.open();
+		
+		if (selType == "Grid")
+			mapPath = HOME_DIR + '/' + txtRootDir.getText() + "/sumo/map/grid/grid.sumocfg";
+		else if (selType == "Spider") 
+			mapPath = HOME_DIR + '/' + txtRootDir.getText() + "/sumo/map/spider/spider.sumocfg";
+		else if (selType == "Random")
+			mapPath = HOME_DIR + '/' + txtRootDir.getText() + "/sumo/map/random/random.sumocfg";
+		
 		shlSelfadaptiveContractSimulator.open();
 		shlSelfadaptiveContractSimulator.layout();
 		while (!shlSelfadaptiveContractSimulator.isDisposed()) {
@@ -175,14 +191,6 @@ public class SAConSimulator {
 		txtPeerDistance.setText("100");
 		txtPeerDistance.setBounds(114, 94, 100, 23);
 		
-		Label lblNumOfPeers = new Label(grpSimulationSetting, SWT.NONE);
-		lblNumOfPeers.setText("# of Peers:");
-		lblNumOfPeers.setBounds(10, 126, 106, 15);
-		
-		txtNumOfPeers = new Text(grpSimulationSetting, SWT.BORDER);
-		txtNumOfPeers.setText("2");
-		txtNumOfPeers.setBounds(114, 122, 100, 23);
-		
 		btnStartSim.addMouseListener(new MouseAdapter() {
 			
 			public void mouseDown(MouseEvent e) {
@@ -190,7 +198,7 @@ public class SAConSimulator {
 				int randomNum = ThreadLocalRandom.current().nextInt(10000, 20000);
 				
 				txtLog.append("Running SUMO Server...\n");
-				connSumo = new SumoTraciConnection(HOME_DIR + '/' + txtRootDir.getText() + "/sumo/map/grid/grid.sumocfg", randomNum);
+				connSumo = new SumoTraciConnection(mapPath, randomNum);
 				
 				try {
 					connSumo.runServer();

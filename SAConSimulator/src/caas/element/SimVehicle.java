@@ -93,7 +93,7 @@ public class SimVehicle {
 				connectedPeerNode.remove(peerId);
 				
 				// Remove this node to target node
-				System.out.println("Remove Node #" + peerId + " to Node #" + this.id);
+				System.out.println("Remove Node #" + peerId + " from Node #" + this.id);
 				String [] cmd = {ethCmdPath + "/ethereum/manageScript/removePeer.sh", ethDir, peerId, this.id};
 				
 				try {
