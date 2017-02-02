@@ -6,13 +6,13 @@ import java.io.IOException;
 
 public class SASimUtil {
 
-public double getLastDepartTime(String HOME_DIR, String filePath) {
+	public static double getLastDepartTime(String filePath) {
 		
 		String lastTime = "";
 		
 		try {
 			
-			FileReader fr = new FileReader(HOME_DIR + filePath);
+			FileReader fr = new FileReader(filePath);
 			BufferedReader br = new BufferedReader(fr);
 
 			String s;
@@ -32,6 +32,39 @@ public double getLastDepartTime(String HOME_DIR, String filePath) {
 		}
 		
 		return Math.ceil(Float.parseFloat(lastTime));
+		
+	}
+	
+	public static int getNumOfVehicles(String filePath) {
+		
+		int numOfVehicle = 0;
+		String vehID;
+		
+		try {
+			
+			FileReader fr = new FileReader(filePath);
+			BufferedReader br = new BufferedReader(fr);
+
+			String s;
+			String lastVehicle = "";
+			while((s = br.readLine()) != null) {
+				if (s.indexOf("<vehicle id=")>=0)
+					lastVehicle = s;
+			}
+			
+			vehID = lastVehicle.substring(lastVehicle.indexOf("<vehicle id=")+13, lastVehicle.indexOf(" ", lastVehicle.indexOf("<vehicle id=")+13)-1);			
+			vehID = vehID.replace("veh", "");				
+			
+			numOfVehicle = Integer.parseInt(vehID);
+			
+			br.close();
+			fr.close();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return numOfVehicle;
 		
 	}
 	

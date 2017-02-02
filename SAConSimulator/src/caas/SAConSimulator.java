@@ -33,7 +33,7 @@ public class SAConSimulator {
 	
 	public static SumoTraciConnection connSumo;
 	
-	public String selType;
+	public String[] selType = new String[3];
 	public String mapPath;
 	
 	// GUI related variables
@@ -50,6 +50,7 @@ public class SAConSimulator {
 	private Text txtRootDir;
 	private Text txtDelay;
 	private Text txtPeerDistance;
+	private Label lblMapInfo;
 
 	public static void main(String[] args) {	
 				
@@ -68,13 +69,7 @@ public class SAConSimulator {
 		
 		selMapDialog = new SelectMapDialog(shlSelfadaptiveContractSimulator, SWT.BORDER | SWT.CLOSE | SWT.TITLE);
 		selType = selMapDialog.open();
-		
-		if (selType == "Grid")
-			mapPath = HOME_DIR + '/' + txtRootDir.getText() + "/sumo/map/grid/grid.sumocfg";
-		else if (selType == "Spider") 
-			mapPath = HOME_DIR + '/' + txtRootDir.getText() + "/sumo/map/spider/spider.sumocfg";
-		else if (selType == "Random")
-			mapPath = HOME_DIR + '/' + txtRootDir.getText() + "/sumo/map/random/random.sumocfg";
+		makeSUMOMap(selType);										// Making sumo map before running simulation		
 		
 		shlSelfadaptiveContractSimulator.open();
 		shlSelfadaptiveContractSimulator.layout();
@@ -120,6 +115,10 @@ public class SAConSimulator {
 		btnAutoStep.setFont(SWTResourceManager.getFont("Sans", 14, SWT.NORMAL));
 		btnAutoStep.setBounds(670, 528, 120, 28);
 		btnAutoStep.setText("Auto Step");
+		
+		lblMapInfo = new Label(compMain, SWT.NONE);
+		lblMapInfo.setBounds(10, 10, 370, 15);
+		lblMapInfo.setText("Map information");
 		
 		Group grpNodeProperties = new Group(shlSelfadaptiveContractSimulator, SWT.NONE);
 		grpNodeProperties.setText("Node & Properties");
@@ -204,8 +203,9 @@ public class SAConSimulator {
 					connSumo.runServer();
 					connSumo.nextSimStep();												// First step is empty
 					
-					txtLog.append("Successfully loading sumo map.\n");
-					txtLog.append("Map bounds are: " + connSumo.queryBounds() + "\n");
+					txtLog.append("Successfully loading sumo map!!\n");
+					lblMapInfo.setText("Map siz:(" + connSumo.queryBounds().getWidth() + "," + connSumo.queryBounds().getHeight() + "), "
+									+ "Total # of Vehicles:" + SASimUtil.getNumOfVehicles("./map/" + selType[0] + "/" + selType[0] + ".rou.xml"));
 					
 					xPosWeight = compMain.getBounds().width / connSumo.queryBounds().getWidth();
 					yPosWeight = compMain.getBounds().height / connSumo.queryBounds().getHeight();
@@ -214,21 +214,18 @@ public class SAConSimulator {
 					txtLog.append("Sumo Server error: " + ex.getMessage() + "\n");
 				}				
 				
-				txtLog.append("Running Master's node..." + "\n");
+				txtLog.append("Running Ethereum master node..." + "\n");
 				String [] cmd = {HOME_DIR + '/' + txtRootDir.getText() + "/ethereum/runMasterNode.sh", txtEthDir.getText()};
 				
 				try {
-					Process script_exec = Runtime.getRuntime().exec(cmd);
-					BufferedReader reader = new BufferedReader(new InputStreamReader(script_exec.getInputStream()));
-					
-					String output;
-					while ((output = reader.readLine()) != null) {
-						txtLog.append(output + "\n");
-					}
+
+					Runtime.getRuntime().exec(cmd);
 					
 				} catch (IOException ioe) {
 					txtLog.append("Error: " + ioe.getMessage() + "\n");
 				}
+				
+				txtLog.append("Successfully establishing Ethereum master node!!");
 				
 				btnNextStep.setEnabled(true);									// Set Next Step button enable
 				btnAutoStep.setEnabled(true); 									// Set Auto Step button enable
@@ -280,7 +277,7 @@ public class SAConSimulator {
 			
 			public void mouseDown(MouseEvent e) {
 				
-				int stepTime = (int) saSimUtil.getLastDepartTime(HOME_DIR, '/' + txtRootDir.getText() + "/sumo/map/grid/grid.rou.xml");
+				int stepTime = (int) saSimUtil.getLastDepartTime("./map/" + selType[0] + "/" + selType[0] + ".rou.xml");
 				
 				autoStepRunning = true;
 				btnNextStep.setEnabled(false); 									// Set Next step button to disable
@@ -454,12 +451,13 @@ public class SAConSimulator {
 						}
 					}
 					
-					int strWith = e.gc.stringExtent(simVehicle.getID()).x;
+					String vehID = simVehicle.getID().replace("veh", "");
+					int strWith = e.gc.stringExtent(vehID).x;
 					
 					if (autoStepRunning) {			
 						try {
 							e.gc.fillOval((int)(simVehicle.getXpos() * xPosWeight)+10, (int)(simVehicle.getYpos() * yPosWeight)+10, 20, 20);
-							e.gc.drawText(simVehicle.getID(), (int)(simVehicle.getXpos() * xPosWeight)+(20-(strWith/2)), (int)(simVehicle.getYpos() * yPosWeight)+13);		
+							e.gc.drawText(vehID, (int)(simVehicle.getXpos() * xPosWeight)+(20-(strWith/2)), (int)(simVehicle.getYpos() * yPosWeight)+13);		
 						} catch (IOException e1) {
 							e1.printStackTrace();
 						}
@@ -468,6 +466,28 @@ public class SAConSimulator {
 			 }
 		});
 		compMain.redraw();
+	}
+	
+	public void makeSUMOMap(String [] selType) {
+		
+		mapPath = "./map/" + selType[0] + "/" + selType[0] + ".sumocfg";
+		
+		if (selType[0] == "KoreaUniv" | selType[0] == "NRFSeoul" | selType[0] == "CheonanIC") return;
+		
+		String [] createNetCmd = {HOME_DIR + '/' + txtRootDir.getText() + "/sumo/createNet.sh", selType[0], selType[1]};		
+		String [] makeRouteCmd = {HOME_DIR + '/' + txtRootDir.getText() + "/sumo/makeRoute.sh", selType[0], selType[2]};
+		
+		try {
+			
+			Runtime.getRuntime().exec(createNetCmd);			
+			Runtime.getRuntime().exec(makeRouteCmd);
+			
+			mapPath = "./map/" + selType[0] + "/" + selType[0] + ".sumocfg";
+			
+			txtLog.append("Successfully making map into following path: " + mapPath);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
 
