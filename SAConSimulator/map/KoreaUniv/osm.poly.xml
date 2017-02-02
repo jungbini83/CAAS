@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on Thu Feb  2 16:43:53 2017 by SUMO polyconvert Version 0.28.0
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/polyconvertConfiguration.xsd">
+
+    <input>
+        <net-file value="/usr/local/share/sumo/tools/2017-02-02-16-43-51/osm.net.xml"/>
+        <osm-files value="osm_bbox.osm.xml"/>
+        <osm.keep-full-type value="true"/>
+        <type-file value="/usr/local/share/sumo/data/typemap/osmPolyconvert.typ.xml"/>
+    </input>
+
+    <output>
+        <output-file value="/usr/local/share/sumo/tools/2017-02-02-16-43-51/osm.poly.xml"/>
+    </output>
+
+    <processing>
+        <poi-layer-offset value="5"/>
+    </processing>
+
+    <report>
+        <verbose value="true"/>
+    </report>
+
+</configuration>
+-->
+
+<additional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/additional_file.xsd">
+    <location netOffset="-325567.62,-4160973.65" convBoundary="-5.66,-150.68,2082.89,1058.10" origBoundary="127.024509,37.578089,127.048076,37.589019" projParameter="+proj=utm +zone=52 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"/>
+
+    <poi id="3957800349" type="amenity.bank" color="237,199,199" layer="4.00" x="434.85" y="413.62"/>
+    <poi id="3957800350" type="shop.bakery" color="237,199,255" layer="4.00" x="462.22" y="407.85"/>
+    <poi id="3957800351" type="shop.bakery" color="237,199,255" layer="4.00" x="495.70" y="391.24"/>
+    <poi id="3958169011" type="amenity.bank" color="237,199,199" layer="4.00" x="493.75" y="353.27"/>
+    <poi id="3964313154" type="amenity.cafe" color="237,199,199" layer="4.00" x="394.85" y="395.61"/>
+    <poi id="3964329361" type="amenity.internet_cafe" color="237,199,199" layer="4.00" x="395.93" y="395.82"/>
+    <poi id="3964330732" type="amenity.restaurant" color="237,199,199" layer="4.00" x="393.60" y="392.21"/>
+    <poi id="3972902649" type="amenity.cafe" color="237,199,199" layer="4.00" x="420.13" y="410.66"/>
+</additional>

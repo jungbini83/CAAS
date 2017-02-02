@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!-- generated on 2017-02-02 14:35:49.874212 by $Id: randomTrips.py 21557 2016-09-28 10:43:52Z luecken $
+  options: -n ./map/Random/Random.net.xml -r ./map/Random/Random.rou.xml <doubleminus>trip-attributes=departLane="best" departSpeed="random" departPos="random" -o ./map/Random/Random.trips.xml -e 180 <doubleminus>intermediate 10 -p 7 -b 0.1
+-->
+<trips>
+    <trip id="0" depart="0.10" from="344" to="381" via="121 333 17 356 -344 119 -17 125 -349 -119" departLane="best"/>
+    <trip id="1" depart="7.10" from="-210" to="-64" via="13 -333 -381 -13 -116 348 138 -13 126 121" departLane="best"/>
+    <trip id="2" depart="14.10" from="344" to="123" via="64 126 348 -123 125 64 25 -9 -381 126" departLane="best"/>
+    <trip id="3" depart="21.10" from="-365" to="332" via="-38 117 -356 348 3 -7 -7 -9 117 -121" departLane="best"/>
+    <trip id="4" depart="28.10" from="121" to="365" via="-116 -126 -25 333 -138 344 -336 -7 117 -344" departLane="best"/>
+    <trip id="5" depart="35.10" from="-210" to="-19" via="-356 348 -326 210 -138 -3 -126 -15 381 25" departLane="best"/>
+    <trip id="6" depart="42.10" from="-128" to="25" via="38 -117 123 349 -356 -116 -336 123 381 -38" departLane="best"/>
+    <trip id="7" depart="49.10" from="-13" to="25" via="-3 123 121 -125 -3 349 13 15 -15 356" departLane="best"/>
+    <trip id="8" depart="56.10" from="-116" to="-117" via="126 -138 -64 -64 117 116 -3 -344 344 64" departLane="best"/>
+    <trip id="9" depart="63.10" from="-338" to="64" via="-381 -381 313 25 210 -19 -25 -116 -7 25" departLane="best"/>
+    <trip id="10" depart="70.10" from="313" to="379" via="3 333 9 -313 -356 -64 119 -128 -121 349" departLane="best"/>
+    <trip id="11" depart="77.10" from="-379" to="64" via="-13 121 19 7 13 25 -381 -121 -119 -64" departLane="best"/>
+    <trip id="12" depart="84.10" from="-356" to="38" via="116 15 -349 348 64 7 -15 38 121 64" departLane="best"/>
+    <trip id="13" depart="91.10" from="-13" to="-138" via="125 -123 17 -333 381 64 -116 -326 -348 117" departLane="best"/>
+    <trip id="14" depart="98.10" from="15" to="338" via="15 344 336 15 128 -138 348 -336 -138 -333" departLane="best"/>
+    <trip id="15" depart="105.10" from="-326" to="356" via="-344 -3 9 7 349 344 349 9 -64 348" departLane="best"/>
+    <trip id="16" depart="112.10" from="7" to="-117" via="-9 19 17 38 -349 -128 117 38 349 -15" departLane="best"/>
+    <trip id="17" depart="119.10" from="-13" to="333" via="-344 -128 344 -3 326 121 116 -348 -7 -125" departLane="best"/>
+    <trip id="18" depart="126.10" from="126" to="-210" via="-348 381 119 356 117 -128 123 -121 116 -381" departLane="best"/>
+    <trip id="19" depart="133.10" from="313" to="138" via="3 -336 -333 128 121 348 13 -7 -126 -19" departLane="best"/>
+    <trip id="20" depart="140.10" from="349" to="128" via="210 7 -119 117 333 -121 -117 9 -38 121" departLane="best"/>
+    <trip id="21" depart="147.10" from="-19" to="13" via="121 13 -19 -7 336 25 -126 -17 3 326" departLane="best"/>
+    <trip id="22" depart="154.10" from="121" to="-349" via="-64 3 -326 119 -38 -349 123 -25 333 128" departLane="best"/>
+    <trip id="23" depart="161.10" from="349" to="-25" via="-38 326 25 -3 -64 -38 313 -128 -381 126" departLane="best"/>
+    <trip id="24" depart="168.10" from="-17" to="383" via="13 64 -117 -333 117 344 313 -119 -381 -210" departLane="best"/>
+    <trip id="25" depart="175.10" from="-19" to="333" via="-25 381 -25 126 128 138 -313 381 -15 -13" departLane="best"/>
+</trips>

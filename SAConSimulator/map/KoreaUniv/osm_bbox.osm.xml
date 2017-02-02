@@ -1,0 +1,1005 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="Overpass API">
+<note>The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.</note>
+<meta osm_base="2017-02-02T07:43:02Z"/>
+
+  <node id="287288045" lat="37.5826576" lon="127.0295291">
+    <tag k="name" v="안암 오거리"/>
+    <tag k="name:en" v="AnAm Crossroad"/>
+  </node>
+  <node id="287519441" lat="37.5863004" lon="127.0293698">
+    <tag k="crossing" v="traffic_signals"/>
+    <tag k="highway" v="crossing"/>
+    <tag k="source" v="bing, local knowledge"/>
+  </node>
+  <node id="291715706" lat="37.5836111" lon="127.0294831"/>
+  <node id="357821090" lat="37.5830300" lon="127.0292500">
+    <tag k="highway" v="bus_stop"/>
+    <tag k="name" v="안암동로터리 (Anamdong Rotary)"/>
+    <tag k="name:en" v="Anamdong Rotary"/>
+    <tag k="name:ko" v="안암동로터리"/>
+    <tag k="name:ko_rm" v="Anamdongnoteori"/>
+    <tag k="route_ref" v="100;144;163"/>
+  </node>
+  <node id="357830114" lat="37.5827900" lon="127.0300200">
+    <tag k="highway" v="bus_stop"/>
+    <tag k="name" v="안암로타리 (Anamnotari)"/>
+    <tag k="name:en" v="Anamnotari"/>
+    <tag k="name:ko" v="안암로타리"/>
+    <tag k="name:ko_rm" v="Anamnotari"/>
+    <tag k="route_ref" v="163;100;144;7211;1017"/>
+  </node>
+  <node id="414686004" lat="37.5827100" lon="127.0295300">
+    <tag k="name" v="안암오거리 (Anamogeori)"/>
+    <tag k="name:en" v="Anamogeori"/>
+    <tag k="name:ko" v="안암오거리"/>
+    <tag k="name:ko_rm" v="Anamogeori"/>
+    <tag k="ncat" v="교차로및지명"/>
+    <tag k="source" v="mp2osm"/>
+  </node>
+  <node id="436860485" lat="37.5848978" lon="127.0315165"/>
+  <node id="436860486" lat="37.5851800" lon="127.0317700"/>
+  <node id="436860487" lat="37.5855300" lon="127.0320700"/>
+  <node id="436860488" lat="37.5858220" lon="127.0323233"/>
+  <node id="436860746" lat="37.5828294" lon="127.0359525"/>
+  <node id="436860748" lat="37.5829000" lon="127.0378300"/>
+  <node id="436860754" lat="37.5830600" lon="127.0422600"/>
+  <node id="436860755" lat="37.5830600" lon="127.0427500"/>
+  <node id="436860756" lat="37.5830800" lon="127.0430000"/>
+  <node id="436860757" lat="37.5831100" lon="127.0436300"/>
+  <node id="436860758" lat="37.5831200" lon="127.0442400"/>
+  <node id="436860759" lat="37.5831600" lon="127.0444900"/>
+  <node id="436860760" lat="37.5832200" lon="127.0448400"/>
+  <node id="436860761" lat="37.5833500" lon="127.0454900"/>
+  <node id="436860762" lat="37.5834400" lon="127.0458800"/>
+  <node id="436860763" lat="37.5835300" lon="127.0463100"/>
+  <node id="436860764" lat="37.5835300" lon="127.0464600"/>
+  <node id="436860767" lat="37.5834200" lon="127.0468500"/>
+  <node id="436860768" lat="37.5832500" lon="127.0470500"/>
+  <node id="436860769" lat="37.5827900" lon="127.0476100"/>
+  <node id="436860770" lat="37.5825500" lon="127.0479000"/>
+  <node id="436860771" lat="37.5824194" lon="127.0480763"/>
+  <node id="436871379" lat="37.5864291" lon="127.0328387"/>
+  <node id="1906215104" lat="37.5793021" lon="127.0245716"/>
+  <node id="1918413959" lat="37.5800849" lon="127.0257365"/>
+  <node id="1918414002" lat="37.5826794" lon="127.0295374"/>
+  <node id="1918414038" lat="37.5850144" lon="127.0316454"/>
+  <node id="1918414054" lat="37.5864761" lon="127.0329151"/>
+  <node id="1918414082" lat="37.5882953" lon="127.0346524"/>
+  <node id="1934257472" lat="37.5880291" lon="127.0343981"/>
+  <node id="1936511668" lat="37.5829397" lon="127.0386077"/>
+  <node id="1936511670" lat="37.5829736" lon="127.0404709"/>
+  <node id="1943131843" lat="37.5821103" lon="127.0286816"/>
+  <node id="1943131850" lat="37.5823028" lon="127.0295338"/>
+  <node id="1943131877" lat="37.5823036" lon="127.0295989"/>
+  <node id="1943131883" lat="37.5823112" lon="127.0296455"/>
+  <node id="1943131886" lat="37.5823142" lon="127.0294310"/>
+  <node id="1943131888" lat="37.5823482" lon="127.0297698"/>
+  <node id="1943131891" lat="37.5823586" lon="127.0293006"/>
+  <node id="1943131894" lat="37.5823663" lon="127.0290974"/>
+  <node id="1943131897" lat="37.5823879" lon="127.0292496"/>
+  <node id="1943131901" lat="37.5824297" lon="127.0291956"/>
+  <node id="1943131906" lat="37.5824392" lon="127.0299067"/>
+  <node id="1943131911" lat="37.5824436" lon="127.0291826"/>
+  <node id="1943131918" lat="37.5824695" lon="127.0291582"/>
+  <node id="1943131920" lat="37.5825235" lon="127.0299711"/>
+  <node id="1943131924" lat="37.5825846" lon="127.0290959"/>
+  <node id="1943131928" lat="37.5826560" lon="127.0300091"/>
+  <node id="1943131931" lat="37.5826721" lon="127.0290833"/>
+  <node id="1943131935" lat="37.5826834" lon="127.0295256"/>
+  <node id="1943131939" lat="37.5827368" lon="127.0300016"/>
+  <node id="1943131943" lat="37.5827751" lon="127.0291029"/>
+  <node id="1943131956" lat="37.5828750" lon="127.0299300"/>
+  <node id="1943131957" lat="37.5829004" lon="127.0291864"/>
+  <node id="1943131958" lat="37.5829263" lon="127.0298772"/>
+  <node id="1943131960" lat="37.5829657" lon="127.0284978"/>
+  <node id="1943131962" lat="37.5829671" lon="127.0298241"/>
+  <node id="1943131965" lat="37.5829832" lon="127.0297945"/>
+  <node id="1943131968" lat="37.5829985" lon="127.0293410">
+    <tag k="highway" v="crossing"/>
+  </node>
+  <node id="1943131971" lat="37.5830178" lon="127.0296925"/>
+  <node id="1943131974" lat="37.5830316" lon="127.0294703"/>
+  <node id="1943131977" lat="37.5830317" lon="127.0296212">
+    <tag k="crossing" v="zebra"/>
+    <tag k="highway" v="crossing"/>
+  </node>
+  <node id="1943131979" lat="37.5830344" lon="127.0295113"/>
+  <node id="1943131982" lat="37.5830359" lon="127.0298710"/>
+  <node id="1943131984" lat="37.5830365" lon="127.0295413"/>
+  <node id="1943131992" lat="37.5834011" lon="127.0288408"/>
+  <node id="2362800056" lat="37.5800771" lon="127.0257215"/>
+  <node id="2362800066" lat="37.5808567" lon="127.0268427"/>
+  <node id="2362804021" lat="37.5817527" lon="127.0297007"/>
+  <node id="2957664035" lat="37.5780887" lon="127.0328602"/>
+  <node id="2957664036" lat="37.5781729" lon="127.0382839"/>
+  <node id="2957665539" lat="37.5811932" lon="127.0297785"/>
+  <node id="2957665540" lat="37.5813535" lon="127.0316178"/>
+  <node id="2957665735" lat="37.5782330" lon="127.0389178"/>
+  <node id="2957666435" lat="37.5793579" lon="127.0424009"/>
+  <node id="2957666833" lat="37.5785154" lon="127.0328700"/>
+  <node id="2958399751" lat="37.5890187" lon="127.0354045"/>
+  <node id="2958401233" lat="37.5792292" lon="127.0245094"/>
+  <node id="3391904193" lat="37.5863448" lon="127.0327675">
+    <tag k="highway" v="crossing"/>
+  </node>
+  <node id="3442140797" lat="37.5860478" lon="127.0293815"/>
+  <node id="3442142694" lat="37.5862147" lon="127.0293734">
+    <tag k="highway" v="crossing"/>
+  </node>
+  <node id="3817459252" lat="37.5827162" lon="127.0316022"/>
+  <node id="3817459254" lat="37.5827609" lon="127.0332267"/>
+  <node id="3817459255" lat="37.5827762" lon="127.0338579"/>
+  <node id="3817459357" lat="37.5828168" lon="127.0350390"/>
+  <node id="3817459384" lat="37.5834045" lon="127.0301933"/>
+  <node id="3817459406" lat="37.5837561" lon="127.0305115"/>
+  <node id="3817459428" lat="37.5839995" lon="127.0307279"/>
+  <node id="3817459458" lat="37.5843359" lon="127.0294525"/>
+  <node id="3817459462" lat="37.5843641" lon="127.0310521"/>
+  <node id="3817459507" lat="37.5850788" lon="127.0316826"/>
+  <node id="3817459518" lat="37.5852276" lon="127.0318108"/>
+  <node id="3817459525" lat="37.5852762" lon="127.0294129"/>
+  <node id="3828659071" lat="37.5794838" lon="127.0248425"/>
+  <node id="3828659078" lat="37.5797545" lon="127.0252462"/>
+  <node id="3828659145" lat="37.5812361" lon="127.0298001"/>
+  <node id="3828659274" lat="37.5814444" lon="127.0277157"/>
+  <node id="3828659276" lat="37.5815078" lon="127.0297478"/>
+  <node id="3828659331" lat="37.5827755" lon="127.0338273"/>
+  <node id="3828659335" lat="37.5830180" lon="127.0294173"/>
+  <node id="3829007962" lat="37.5828297" lon="127.0356370"/>
+  <node id="3829007963" lat="37.5828475" lon="127.0366799"/>
+  <node id="3829007964" lat="37.5828753" lon="127.0373108"/>
+  <node id="3829007965" lat="37.5829115" lon="127.0380263"/>
+  <node id="3829007968" lat="37.5829422" lon="127.0392187"/>
+  <node id="3829007970" lat="37.5830167" lon="127.0417214"/>
+  <node id="3829007971" lat="37.5830600" lon="127.0423732"/>
+  <node id="3829007972" lat="37.5831067" lon="127.0435617"/>
+  <node id="3829083171" lat="37.5831976" lon="127.0447095"/>
+  <node id="3829083172" lat="37.5832492" lon="127.0449858"/>
+  <node id="3830520330" lat="37.5830629" lon="127.0427865"/>
+  <node id="3830520333" lat="37.5831010" lon="127.0434409"/>
+  <node id="3957789949" lat="37.5827499" lon="127.0328021"/>
+  <node id="3957800349" lat="37.5831103" lon="127.0293953">
+    <tag k="addr:city" v="안암동 (Anam-dong)"/>
+    <tag k="addr:housenumber" v="75"/>
+    <tag k="addr:street" v="안암로"/>
+    <tag k="amenity" v="bank"/>
+    <tag k="atm" v="yes"/>
+    <tag k="name" v="하나 은행"/>
+    <tag k="name:en" v="Hana Bank"/>
+    <tag k="name:ko" v="하나 은행"/>
+    <tag k="operator" v="하나 은행"/>
+  </node>
+  <node id="3957800350" lat="37.5830635" lon="127.0297064">
+    <tag k="name" v="Tous Les Jours"/>
+    <tag k="shop" v="bakery"/>
+  </node>
+  <node id="3957800351" lat="37.5829202" lon="127.0300894">
+    <tag k="name" v="Paris Baguette"/>
+    <tag k="shop" v="bakery"/>
+  </node>
+  <node id="3958169011" lat="37.5825778" lon="127.0300763">
+    <tag k="amenity" v="bank"/>
+    <tag k="name" v="KEB"/>
+  </node>
+  <node id="3964313154" lat="37.5829405" lon="127.0289468">
+    <tag k="amenity" v="cafe"/>
+    <tag k="name:en" v="Café Gong rin ga"/>
+    <tag k="name:ko" v="공린가"/>
+  </node>
+  <node id="3964329361" lat="37.5829426" lon="127.0289589">
+    <tag k="amenity" v="internet_cafe"/>
+    <tag k="name" v="Kangho Vintage PC cafe"/>
+  </node>
+  <node id="3964330732" lat="37.5829097" lon="127.0289334">
+    <tag k="amenity" v="restaurant"/>
+    <tag k="cuisine" v="Korean, chicken soup"/>
+    <tag k="name" v="닭한마리"/>
+  </node>
+  <node id="3964387735" lat="37.5831222" lon="127.0292741"/>
+  <node id="3964387736" lat="37.5831222" lon="127.0292741">
+    <tag k="barrier" v="bollard"/>
+  </node>
+  <node id="3964387737" lat="37.5827332" lon="127.0297984"/>
+  <node id="3964387738" lat="37.5828222" lon="127.0299674">
+    <tag k="crossing" v="zebra"/>
+    <tag k="highway" v="crossing"/>
+  </node>
+  <node id="3964387739" lat="37.5828337" lon="127.0296970">
+    <tag k="crossing" v="traffic_signals"/>
+    <tag k="highway" v="crossing"/>
+  </node>
+  <node id="3964387740" lat="37.5829224" lon="127.0296187"/>
+  <node id="3964387741" lat="37.5826631" lon="127.0298279"/>
+  <node id="3964387742" lat="37.5825260" lon="127.0297636"/>
+  <node id="3964387743" lat="37.5824771" lon="127.0297300"/>
+  <node id="3964387744" lat="37.5823883" lon="127.0298302">
+    <tag k="highway" v="crossing"/>
+  </node>
+  <node id="3964387745" lat="37.5828438" lon="127.0294310"/>
+  <node id="3964387746" lat="37.5827396" lon="127.0292794"/>
+  <node id="3964387747" lat="37.5826057" lon="127.0292486"/>
+  <node id="3964387748" lat="37.5825445" lon="127.0291176">
+    <tag k="highway" v="crossing"/>
+  </node>
+  <node id="3964387749" lat="37.5825384" lon="127.0293181">
+    <tag k="crossing" v="traffic_signals"/>
+    <tag k="highway" v="crossing"/>
+  </node>
+  <node id="3964387750" lat="37.5824240" lon="127.0294095"/>
+  <node id="3964387751" lat="37.5823302" lon="127.0293839">
+    <tag k="highway" v="crossing"/>
+  </node>
+  <node id="3964387752" lat="37.5822492" lon="127.0296090">
+    <tag k="highway" v="crossing"/>
+    <tag k="source" v="bing"/>
+  </node>
+  <node id="3964387753" lat="37.5830566" lon="127.0295102">
+    <tag k="crossing" v="traffic_signals"/>
+    <tag k="highway" v="crossing"/>
+    <tag k="source" v="bing, survey"/>
+  </node>
+  <node id="3964517825" lat="37.5826562" lon="127.0300249">
+    <tag k="crossing" v="traffic_signals"/>
+    <tag k="highway" v="crossing"/>
+    <tag k="source" v="bing, local knowledge"/>
+  </node>
+  <node id="3964517826" lat="37.5827062" lon="127.0314264">
+    <tag k="crossing" v="traffic_signals"/>
+    <tag k="highway" v="crossing"/>
+    <tag k="source" v="bing, local knowledge"/>
+  </node>
+  <node id="3972902649" lat="37.5830809" lon="127.0292294">
+    <tag k="addr:housenumber" v="73"/>
+    <tag k="addr:street" v="안암로"/>
+    <tag k="amenity" v="cafe"/>
+    <tag k="name" v="Coffine Gurunaru"/>
+  </node>
+  <node id="3972977105" lat="37.5827284" lon="127.0320220"/>
+  <node id="3972977108" lat="37.5827858" lon="127.0342852"/>
+  <node id="4172491677" lat="37.5830600" lon="127.0426943"/>
+  <node id="4172491681" lat="37.5830818" lon="127.0430380"/>
+  <node id="4172491682" lat="37.5830621" lon="127.0424976"/>
+  <node id="4452391233" lat="37.5826634" lon="127.0302423"/>
+  <node id="4452391234" lat="37.5826703" lon="127.0304449"/>
+  <node id="4456923408" lat="37.5808188" lon="127.0267882"/>
+  <way id="26259445">
+    <nd ref="287288045"/>
+    <nd ref="1943131935"/>
+    <tag k="highway" v="secondary"/>
+    <tag k="name" v="무학로 (Muhak-ro )"/>
+    <tag k="name:en" v="Muhak-ro"/>
+    <tag k="name:ko" v="무학로"/>
+    <tag k="name:ko_rm" v="Muhak-ro"/>
+    <tag k="ncat" v="광역시도로"/>
+    <tag k="review" v="no"/>
+    <tag k="source" v="NTIC"/>
+  </way>
+  <way id="37401829">
+    <nd ref="1943131928"/>
+    <nd ref="4452391233"/>
+    <nd ref="4452391234"/>
+    <nd ref="3964517826"/>
+    <nd ref="3817459252"/>
+    <nd ref="3972977105"/>
+    <nd ref="3957789949"/>
+    <nd ref="3817459254"/>
+    <nd ref="3828659331"/>
+    <nd ref="3817459255"/>
+    <nd ref="3972977108"/>
+    <nd ref="3817459357"/>
+    <nd ref="3829007962"/>
+    <nd ref="436860746"/>
+    <nd ref="3829007963"/>
+    <nd ref="3829007964"/>
+    <nd ref="436860748"/>
+    <nd ref="3829007965"/>
+    <nd ref="1936511668"/>
+    <nd ref="3829007968"/>
+    <nd ref="1936511670"/>
+    <nd ref="3829007970"/>
+    <nd ref="436860754"/>
+    <nd ref="3829007971"/>
+    <nd ref="4172491682"/>
+    <nd ref="4172491677"/>
+    <nd ref="436860755"/>
+    <nd ref="3830520330"/>
+    <nd ref="436860756"/>
+    <nd ref="4172491681"/>
+    <nd ref="3830520333"/>
+    <nd ref="3829007972"/>
+    <nd ref="436860757"/>
+    <nd ref="436860758"/>
+    <nd ref="436860759"/>
+    <nd ref="3829083171"/>
+    <nd ref="436860760"/>
+    <nd ref="3829083172"/>
+    <nd ref="436860761"/>
+    <nd ref="436860762"/>
+    <nd ref="436860763"/>
+    <nd ref="436860764"/>
+    <nd ref="436860767"/>
+    <nd ref="436860768"/>
+    <nd ref="436860769"/>
+    <nd ref="436860770"/>
+    <nd ref="436860771"/>
+    <tag k="highway" v="secondary"/>
+    <tag k="name" v="약령시로"/>
+    <tag k="name:en" v="Yangnyeongsi-ro"/>
+    <tag k="name:ko" v="약령시로"/>
+    <tag k="name:ko_rm" v="Yangnyeongsi-ro"/>
+    <tag k="ncat" v="광역시도로"/>
+    <tag k="review" v="no"/>
+    <tag k="source" v="NTIC"/>
+  </way>
+  <way id="183521126">
+    <nd ref="1906215104"/>
+    <nd ref="3828659071"/>
+    <nd ref="3828659078"/>
+    <nd ref="2362800056"/>
+    <nd ref="4456923408"/>
+    <nd ref="2362800066"/>
+    <nd ref="3828659274"/>
+    <nd ref="1943131843"/>
+    <nd ref="1943131894"/>
+    <tag k="highway" v="secondary"/>
+    <tag k="name" v="안암로"/>
+    <tag k="name:en" v="Anam-ro"/>
+    <tag k="name:ko" v="안암로"/>
+    <tag k="name:ko_rm" v="Anam-ro"/>
+    <tag k="ncat" v="광역시도로"/>
+    <tag k="review" v="no"/>
+    <tag k="source" v="NTIC"/>
+  </way>
+  <way id="183895330">
+    <nd ref="1943131960"/>
+    <nd ref="1943131943"/>
+    <tag k="highway" v="residential"/>
+    <tag k="lanes" v="1"/>
+    <tag k="name" v="안암로"/>
+    <tag k="name:en" v="Anam-ro"/>
+    <tag k="name:ko" v="안암로"/>
+    <tag k="name:ko_rm" v="Anam-ro"/>
+    <tag k="ncat" v="광역시도로"/>
+    <tag k="oneway" v="yes"/>
+    <tag k="review" v="no"/>
+    <tag k="source" v="NTIC"/>
+  </way>
+  <way id="183895331">
+    <nd ref="1943131982"/>
+    <nd ref="3817459384"/>
+    <nd ref="3817459406"/>
+    <nd ref="3817459428"/>
+    <nd ref="3817459462"/>
+    <nd ref="436860485"/>
+    <nd ref="3817459507"/>
+    <nd ref="436860486"/>
+    <nd ref="3817459518"/>
+    <nd ref="436860487"/>
+    <nd ref="436860488"/>
+    <nd ref="3391904193"/>
+    <nd ref="436871379"/>
+    <tag k="highway" v="secondary"/>
+    <tag k="name" v="안암로"/>
+    <tag k="name:en" v="Anam-ro"/>
+    <tag k="name:ko" v="안암로"/>
+    <tag k="name:ko_rm" v="Anam-ro"/>
+    <tag k="ncat" v="광역시도로"/>
+    <tag k="review" v="no"/>
+    <tag k="source" v="NTIC"/>
+  </way>
+  <way id="183895332">
+    <nd ref="1943131982"/>
+    <nd ref="1943131965"/>
+    <nd ref="1943131935"/>
+    <nd ref="3964387749"/>
+    <nd ref="1943131911"/>
+    <nd ref="1943131894"/>
+    <tag k="highway" v="secondary"/>
+    <tag k="name" v="안암로"/>
+    <tag k="name:en" v="Anam-ro"/>
+    <tag k="name:ko" v="안암로"/>
+    <tag k="name:ko_rm" v="Anam-ro"/>
+    <tag k="ncat" v="광역시도로"/>
+    <tag k="oneway" v="yes"/>
+    <tag k="review" v="no"/>
+    <tag k="source" v="NTIC"/>
+  </way>
+  <way id="183895333">
+    <nd ref="1943131894"/>
+    <nd ref="1943131901"/>
+    <nd ref="287288045"/>
+    <nd ref="3964387739"/>
+    <nd ref="1943131962"/>
+    <nd ref="1943131982"/>
+    <tag k="highway" v="secondary"/>
+    <tag k="name" v="안암로"/>
+    <tag k="name:en" v="Anam-ro"/>
+    <tag k="name:ko" v="안암로"/>
+    <tag k="name:ko_rm" v="Anam-ro"/>
+    <tag k="ncat" v="광역시도로"/>
+    <tag k="oneway" v="yes"/>
+    <tag k="review" v="no"/>
+    <tag k="source" v="NTIC"/>
+  </way>
+  <way id="183895338">
+    <nd ref="1943131965"/>
+    <nd ref="1943131971"/>
+    <nd ref="1943131977"/>
+    <nd ref="1943131984"/>
+    <nd ref="1943131979"/>
+    <nd ref="1943131974"/>
+    <nd ref="3828659335"/>
+    <nd ref="1943131968"/>
+    <nd ref="1943131957"/>
+    <nd ref="1943131943"/>
+    <nd ref="1943131931"/>
+    <nd ref="1943131924"/>
+    <nd ref="3964387748"/>
+    <nd ref="1943131918"/>
+    <nd ref="1943131911"/>
+    <tag k="REST_VEH" v="0"/>
+    <tag k="REST_W" v="0"/>
+    <tag k="ROAD_RANK" v="107"/>
+    <tag k="ROAD_TYPE" v="000"/>
+    <tag k="highway" v="secondary"/>
+    <tag k="lanes" v="1"/>
+    <tag k="maxheight" v="0"/>
+    <tag k="maxspeed" v="30"/>
+    <tag k="name" v="안암로;무학로;참살이길;약령시길"/>
+    <tag k="source" v="NTIC"/>
+  </way>
+  <way id="183895339">
+    <nd ref="1943131901"/>
+    <nd ref="1943131897"/>
+    <nd ref="1943131891"/>
+    <nd ref="3964387751"/>
+    <nd ref="1943131886"/>
+    <nd ref="1943131850"/>
+    <nd ref="1943131877"/>
+    <nd ref="1943131883"/>
+    <nd ref="1943131888"/>
+    <nd ref="3964387744"/>
+    <nd ref="1943131906"/>
+    <nd ref="1943131920"/>
+    <nd ref="1943131928"/>
+    <nd ref="1943131939"/>
+    <nd ref="3964387738"/>
+    <nd ref="1943131956"/>
+    <nd ref="1943131958"/>
+    <nd ref="1943131962"/>
+    <tag k="REST_VEH" v="0"/>
+    <tag k="REST_W" v="0"/>
+    <tag k="ROAD_RANK" v="107"/>
+    <tag k="ROAD_TYPE" v="000"/>
+    <tag k="highway" v="secondary"/>
+    <tag k="lanes" v="1"/>
+    <tag k="maxheight" v="0"/>
+    <tag k="maxspeed" v="30"/>
+    <tag k="name" v="안암로;무학로;참살이길;약령시길"/>
+    <tag k="source" v="NTIC"/>
+  </way>
+  <way id="183895344">
+    <nd ref="1943131935"/>
+    <nd ref="1943131979"/>
+    <nd ref="291715706"/>
+    <nd ref="3817459458"/>
+    <nd ref="3817459525"/>
+    <nd ref="3442140797"/>
+    <nd ref="3442142694"/>
+    <nd ref="287519441"/>
+    <tag k="highway" v="residential"/>
+    <tag k="lanes" v="1"/>
+    <tag k="name" v="인촌로24길"/>
+    <tag k="name:en" v="Inchon-ro 24-gil"/>
+    <tag k="name:ko" v="인촌로24길"/>
+    <tag k="name:ko_rm" v="Inchon-ro 24-gil"/>
+    <tag k="oneway" v="yes"/>
+    <tag k="surface" v="asphalt"/>
+  </way>
+  <way id="292221458">
+    <nd ref="2957666435"/>
+    <nd ref="2957665735"/>
+    <nd ref="2957664036"/>
+    <nd ref="2957664035"/>
+    <nd ref="2957666833"/>
+    <nd ref="2957665540"/>
+    <nd ref="2957665539"/>
+    <nd ref="3828659276"/>
+    <nd ref="1918414002"/>
+    <tag k="boundary" v="administrative"/>
+  </way>
+  <way id="292221459">
+    <nd ref="1918414002"/>
+    <nd ref="3817459384"/>
+    <nd ref="3817459406"/>
+    <nd ref="3817459428"/>
+    <nd ref="3817459462"/>
+    <nd ref="1918414038"/>
+    <nd ref="1918414054"/>
+    <nd ref="1934257472"/>
+    <nd ref="1918414082"/>
+    <nd ref="2958399751"/>
+  </way>
+  <way id="292291429">
+    <nd ref="2958401233"/>
+    <nd ref="2362800056"/>
+    <nd ref="1918413959"/>
+    <nd ref="1918414002"/>
+  </way>
+  <way id="393225251">
+    <nd ref="1943131992"/>
+    <nd ref="3964387735"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="393225252">
+    <nd ref="1943131977"/>
+    <nd ref="3964387740"/>
+    <nd ref="3964387739"/>
+    <nd ref="3964387737"/>
+    <nd ref="3964387738"/>
+    <tag k="highway" v="footway"/>
+    <tag k="source" v="bing, survey"/>
+    <tag k="surface" v="paved"/>
+  </way>
+  <way id="393225253">
+    <nd ref="3964387737"/>
+    <nd ref="3964387741"/>
+    <nd ref="3964387742"/>
+    <nd ref="3964387743"/>
+    <nd ref="3964387744"/>
+    <tag k="highway" v="footway"/>
+    <tag k="surface" v="paved"/>
+  </way>
+  <way id="393225254">
+    <nd ref="1943131968"/>
+    <nd ref="3964387745"/>
+    <nd ref="3964387746"/>
+    <nd ref="3964387747"/>
+    <nd ref="3964387748"/>
+    <tag k="highway" v="footway"/>
+    <tag k="source" v="bing, survey"/>
+  </way>
+  <way id="393225255">
+    <nd ref="3964387747"/>
+    <nd ref="3964387749"/>
+    <nd ref="3964387750"/>
+    <nd ref="3964387751"/>
+    <tag k="highway" v="footway"/>
+    <tag k="source" v="bing, survey"/>
+  </way>
+  <way id="393310531">
+    <nd ref="3828659145"/>
+    <nd ref="3828659276"/>
+    <nd ref="2362804021"/>
+    <nd ref="1943131877"/>
+    <nd ref="287288045"/>
+    <tag k="highway" v="secondary"/>
+    <tag k="name" v="무학로 (Muhak-ro )"/>
+    <tag k="name:en" v="Muhak-ro"/>
+    <tag k="name:ko" v="무학로"/>
+    <tag k="name:ko_rm" v="Muhak-ro"/>
+    <tag k="ncat" v="광역시도로"/>
+    <tag k="review" v="no"/>
+    <tag k="source" v="NTIC"/>
+  </way>
+  <relation id="2419941">
+    <member type="relation" ref="3882161" role="subarea"/>
+    <member type="relation" ref="3882167" role="subarea"/>
+    <member type="relation" ref="3882166" role="subarea"/>
+    <member type="relation" ref="3882165" role="subarea"/>
+    <member type="relation" ref="3882162" role="subarea"/>
+    <member type="relation" ref="3882159" role="subarea"/>
+    <member type="relation" ref="3882163" role="subarea"/>
+    <member type="relation" ref="3882164" role="subarea"/>
+    <member type="relation" ref="3882160" role="subarea"/>
+    <member type="way" ref="181412936" role="outer"/>
+    <member type="way" ref="292291429" role="outer"/>
+    <member type="way" ref="292221459" role="outer"/>
+    <member type="way" ref="292291428" role="outer"/>
+    <member type="way" ref="292221424" role="outer"/>
+    <member type="way" ref="292291391" role="outer"/>
+    <member type="way" ref="292221425" role="outer"/>
+    <member type="way" ref="292291427" role="outer"/>
+    <member type="way" ref="292221426" role="outer"/>
+    <member type="way" ref="292221423" role="outer"/>
+    <member type="way" ref="181412914" role="outer"/>
+    <member type="way" ref="292221446" role="outer"/>
+    <member type="way" ref="292221443" role="outer"/>
+    <member type="way" ref="292221453" role="outer"/>
+    <member type="way" ref="292268051" role="outer"/>
+    <member type="way" ref="292268047" role="outer"/>
+    <member type="way" ref="292221447" role="outer"/>
+    <member type="way" ref="292268050" role="outer"/>
+    <member type="way" ref="181412934" role="outer"/>
+    <member type="way" ref="292187311" role="outer"/>
+    <member type="way" ref="292221450" role="outer"/>
+    <member type="way" ref="292221428" role="outer"/>
+    <member type="way" ref="292221444" role="outer"/>
+    <member type="way" ref="292215882" role="outer"/>
+    <member type="way" ref="292215856" role="outer"/>
+    <member type="way" ref="181412913" role="outer"/>
+    <member type="way" ref="181412922" role="outer"/>
+    <member type="node" ref="1968205542" role="admin_centre"/>
+    <member type="node" ref="415154036" role="label"/>
+    <tag k="admin_level" v="6"/>
+    <tag k="boundary" v="administrative"/>
+    <tag k="name" v="동대문구"/>
+    <tag k="name:en" v="Dongdaemun-gu"/>
+    <tag k="name:ja" v="東大門区"/>
+    <tag k="name:ko" v="동대문구"/>
+    <tag k="ref" v="06"/>
+    <tag k="type" v="boundary"/>
+    <tag k="wikidata" v="Q50382"/>
+    <tag k="wikipedia" v="ko:동대문구"/>
+  </relation>
+  <relation id="2419952">
+    <member type="relation" ref="3883195" role="subarea"/>
+    <member type="relation" ref="3883193" role="subarea"/>
+    <member type="relation" ref="3883192" role="subarea"/>
+    <member type="relation" ref="3883191" role="subarea"/>
+    <member type="relation" ref="3883198" role="subarea"/>
+    <member type="relation" ref="3883197" role="subarea"/>
+    <member type="relation" ref="3883196" role="subarea"/>
+    <member type="relation" ref="3883187" role="subarea"/>
+    <member type="relation" ref="3883189" role="subarea"/>
+    <member type="relation" ref="3883190" role="subarea"/>
+    <member type="relation" ref="3883188" role="subarea"/>
+    <member type="relation" ref="3883194" role="subarea"/>
+    <member type="way" ref="181412939" role="outer"/>
+    <member type="way" ref="292284887" role="outer"/>
+    <member type="way" ref="292284897" role="outer"/>
+    <member type="way" ref="292284872" role="outer"/>
+    <member type="way" ref="292291395" role="outer"/>
+    <member type="way" ref="292284866" role="outer"/>
+    <member type="way" ref="292291393" role="outer"/>
+    <member type="way" ref="292284860" role="outer"/>
+    <member type="way" ref="292291440" role="outer"/>
+    <member type="way" ref="292291426" role="outer"/>
+    <member type="way" ref="292284859" role="outer"/>
+    <member type="way" ref="292291438" role="outer"/>
+    <member type="way" ref="181412917" role="outer"/>
+    <member type="way" ref="292291425" role="outer"/>
+    <member type="way" ref="292276742" role="outer"/>
+    <member type="way" ref="292276735" role="outer"/>
+    <member type="way" ref="181412927" role="outer"/>
+    <member type="way" ref="292268036" role="outer"/>
+    <member type="way" ref="181412936" role="outer"/>
+    <member type="way" ref="292291429" role="outer"/>
+    <member type="way" ref="292221459" role="outer"/>
+    <member type="way" ref="292291428" role="outer"/>
+    <member type="way" ref="292221424" role="outer"/>
+    <member type="way" ref="292291391" role="outer"/>
+    <member type="way" ref="292221425" role="outer"/>
+    <member type="way" ref="292291427" role="outer"/>
+    <member type="way" ref="292221426" role="outer"/>
+    <member type="way" ref="292221423" role="outer"/>
+    <member type="way" ref="181412916" role="outer"/>
+    <member type="way" ref="292291415" role="outer"/>
+    <member type="way" ref="292291445" role="outer"/>
+    <member type="way" ref="292341603" role="outer"/>
+    <member type="way" ref="292341596" role="outer"/>
+    <member type="way" ref="292341613" role="outer"/>
+    <member type="way" ref="292291430" role="outer"/>
+    <member type="way" ref="292341585" role="outer"/>
+    <member type="way" ref="292341620" role="outer"/>
+    <member type="way" ref="292341584" role="outer"/>
+    <member type="way" ref="292291418" role="outer"/>
+    <member type="way" ref="292341580" role="outer"/>
+    <member type="way" ref="181412894" role="outer"/>
+    <member type="node" ref="1968205556" role="admin_centre"/>
+    <member type="node" ref="415154125" role="label"/>
+    <member type="node" ref="368651136" role=""/>
+    <tag k="admin_level" v="6"/>
+    <tag k="boundary" v="administrative"/>
+    <tag k="name" v="성북구"/>
+    <tag k="name:en" v="Seongbuk-gu"/>
+    <tag k="name:ja" v="城北区"/>
+    <tag k="name:ko" v="성북구"/>
+    <tag k="ref" v="08"/>
+    <tag k="type" v="boundary"/>
+    <tag k="wikidata" v="Q50412"/>
+    <tag k="wikipedia" v="ko:성북구"/>
+  </relation>
+  <relation id="2894431">
+    <member type="way" ref="218758043" role=""/>
+    <member type="way" ref="218659281" role=""/>
+    <member type="way" ref="218659280" role=""/>
+    <member type="way" ref="218643979" role=""/>
+    <member type="way" ref="218647395" role=""/>
+    <member type="way" ref="37400114" role=""/>
+    <member type="way" ref="218681388" role=""/>
+    <member type="way" ref="183521196" role=""/>
+    <member type="way" ref="392851895" role=""/>
+    <member type="way" ref="183521126" role=""/>
+    <member type="way" ref="183521125" role=""/>
+    <member type="way" ref="37401816" role=""/>
+    <member type="way" ref="448704565" role=""/>
+    <member type="way" ref="218975374" role=""/>
+    <member type="way" ref="218975372" role=""/>
+    <member type="way" ref="183895331" role=""/>
+    <member type="way" ref="183895332" role="forward"/>
+    <member type="way" ref="183895333" role="forward"/>
+    <member type="way" ref="218660683" role=""/>
+    <member type="way" ref="333725871" role=""/>
+    <member type="way" ref="183521177" role="forward"/>
+    <member type="way" ref="183521185" role="forward"/>
+    <member type="way" ref="183521178" role="forward"/>
+    <member type="way" ref="180192153" role="forward"/>
+    <member type="way" ref="183521195" role="forward"/>
+    <member type="way" ref="184083240" role="forward"/>
+    <member type="way" ref="184083210" role="forward"/>
+    <member type="way" ref="183521181" role="forward"/>
+    <member type="way" ref="184083202" role="forward"/>
+    <member type="way" ref="37930979" role="forward"/>
+    <member type="way" ref="218919060" role="forward"/>
+    <member type="way" ref="220027347" role="forward"/>
+    <member type="way" ref="218835937" role="forward"/>
+    <tag k="name" v="100"/>
+    <tag k="ref" v="100"/>
+    <tag k="route" v="bus"/>
+    <tag k="type" v="route"/>
+  </relation>
+  <relation id="2894583">
+    <member type="way" ref="448704565" role=""/>
+    <member type="way" ref="218975374" role=""/>
+    <member type="way" ref="218975372" role=""/>
+    <member type="way" ref="183895331" role=""/>
+    <member type="way" ref="183521126" role=""/>
+    <member type="way" ref="183895332" role="forward"/>
+    <member type="way" ref="183895333" role="forward"/>
+    <member type="way" ref="183521125" role=""/>
+    <member type="way" ref="37401816" role=""/>
+    <member type="way" ref="218660683" role=""/>
+    <member type="way" ref="333725871" role=""/>
+    <member type="way" ref="183521177" role="forward"/>
+    <member type="way" ref="183521185" role="forward"/>
+    <member type="way" ref="392851895" role=""/>
+    <member type="way" ref="183521196" role=""/>
+    <member type="way" ref="218681388" role=""/>
+    <member type="way" ref="218681381" role=""/>
+    <member type="way" ref="218681391" role=""/>
+    <member type="way" ref="37402157" role=""/>
+    <member type="way" ref="218649800" role=""/>
+    <member type="way" ref="415328024" role=""/>
+    <member type="way" ref="183521178" role="forward"/>
+    <member type="way" ref="219047674" role="forward"/>
+    <member type="way" ref="180192153" role="forward"/>
+    <member type="way" ref="218923171" role=""/>
+    <member type="way" ref="218960893" role=""/>
+    <member type="way" ref="37403503" role=""/>
+    <member type="way" ref="183272548" role=""/>
+    <member type="way" ref="218662402" role=""/>
+    <member type="way" ref="37928420" role=""/>
+    <member type="way" ref="218681380" role="forward"/>
+    <member type="way" ref="183272354" role="forward"/>
+    <member type="way" ref="218910298" role="forward"/>
+    <member type="way" ref="438360328" role="forward"/>
+    <member type="way" ref="437887683" role="forward"/>
+    <member type="way" ref="345046984" role="forward"/>
+    <member type="way" ref="218910315" role="forward"/>
+    <member type="way" ref="218910318" role="forward"/>
+    <member type="way" ref="218655249" role="forward"/>
+    <member type="way" ref="218655248" role="forward"/>
+    <member type="way" ref="437887686" role="forward"/>
+    <member type="way" ref="97536454" role="forward"/>
+    <member type="way" ref="438360327" role="forward"/>
+    <member type="way" ref="437887689" role="forward"/>
+    <member type="way" ref="37928410" role="forward"/>
+    <member type="way" ref="46622811" role="forward"/>
+    <member type="way" ref="59054221" role="forward"/>
+    <member type="way" ref="59054222" role="forward"/>
+    <member type="way" ref="46623304" role="forward"/>
+    <member type="way" ref="429006647" role="forward"/>
+    <member type="way" ref="345046974" role="forward"/>
+    <member type="way" ref="46623298" role="forward"/>
+    <member type="way" ref="177618264" role="forward"/>
+    <member type="way" ref="218722395" role=""/>
+    <member type="way" ref="218681384" role=""/>
+    <member type="way" ref="177618265" role="forward"/>
+    <member type="way" ref="46623305" role="forward"/>
+    <member type="way" ref="218864481" role="forward"/>
+    <member type="way" ref="218865676" role="forward"/>
+    <member type="way" ref="304364715" role="forward"/>
+    <member type="way" ref="218865675" role="forward"/>
+    <member type="way" ref="219837936" role="forward"/>
+    <member type="way" ref="218877837" role="forward"/>
+    <member type="way" ref="218972540" role="forward"/>
+    <member type="way" ref="218864485" role="forward"/>
+    <member type="way" ref="218877833" role=""/>
+    <member type="way" ref="178441450" role=""/>
+    <member type="way" ref="220061216" role=""/>
+    <member type="way" ref="218910330" role="forward"/>
+    <member type="way" ref="218910312" role="forward"/>
+    <member type="way" ref="218910324" role=""/>
+    <member type="way" ref="364000305" role=""/>
+    <member type="way" ref="364000304" role=""/>
+    <member type="way" ref="218910327" role="forward"/>
+    <member type="way" ref="218873824" role="forward"/>
+    <member type="way" ref="37401013" role="forward"/>
+    <tag k="name" v="144"/>
+    <tag k="ref" v="144"/>
+    <tag k="route" v="bus"/>
+    <tag k="type" v="route"/>
+  </relation>
+  <relation id="2895793">
+    <member type="way" ref="219707179" role=""/>
+    <member type="way" ref="37403280" role=""/>
+    <member type="way" ref="47702159" role="forward"/>
+    <member type="way" ref="204058486" role="forward"/>
+    <member type="way" ref="204058490" role="forward"/>
+    <member type="way" ref="219707177" role="forward"/>
+    <member type="way" ref="204058480" role="forward"/>
+    <member type="way" ref="204058501" role="forward"/>
+    <member type="way" ref="204058491" role="forward"/>
+    <member type="way" ref="204058503" role="forward"/>
+    <member type="way" ref="276663436" role="forward"/>
+    <member type="way" ref="37400449" role="forward"/>
+    <member type="way" ref="219812228" role="forward"/>
+    <member type="way" ref="37400427" role="forward"/>
+    <member type="way" ref="219812235" role="forward"/>
+    <member type="way" ref="276663369" role="forward"/>
+    <member type="way" ref="276663368" role="forward"/>
+    <member type="way" ref="219827013" role="forward"/>
+    <member type="way" ref="219828824" role="forward"/>
+    <member type="way" ref="249126236" role="forward"/>
+    <member type="way" ref="219827000" role="forward"/>
+    <member type="way" ref="215909739" role="forward"/>
+    <member type="way" ref="219707181" role="forward"/>
+    <member type="way" ref="204058485" role="forward"/>
+    <member type="way" ref="204058495" role="forward"/>
+    <member type="way" ref="333733072" role="backward"/>
+    <member type="way" ref="333733073" role=""/>
+    <member type="way" ref="37928547" role=""/>
+    <member type="way" ref="203973739" role=""/>
+    <member type="way" ref="219707180" role="forward"/>
+    <member type="way" ref="204781418" role="forward"/>
+    <member type="way" ref="203973725" role="forward"/>
+    <member type="way" ref="204781430" role="forward"/>
+    <member type="way" ref="204781408" role="forward"/>
+    <member type="way" ref="204781431" role=""/>
+    <member type="way" ref="219705898" role=""/>
+    <member type="way" ref="246164673" role=""/>
+    <member type="way" ref="246164672" role=""/>
+    <member type="way" ref="219733083" role=""/>
+    <member type="way" ref="219733191" role=""/>
+    <member type="way" ref="37401415" role=""/>
+    <member type="way" ref="204778125" role=""/>
+    <member type="way" ref="204778133" role=""/>
+    <member type="way" ref="338110103" role=""/>
+    <member type="way" ref="204778124" role=""/>
+    <member type="way" ref="37401920" role=""/>
+    <member type="way" ref="219704914" role="forward"/>
+    <member type="way" ref="383312033" role="forward"/>
+    <member type="way" ref="37401741" role="forward"/>
+    <member type="way" ref="219704917" role="forward"/>
+    <member type="way" ref="371362710" role="forward"/>
+    <member type="way" ref="371362711" role=""/>
+    <member type="way" ref="219704916" role="forward"/>
+    <member type="way" ref="383312032" role="forward"/>
+    <member type="way" ref="227814153" role=""/>
+    <member type="way" ref="220067988" role=""/>
+    <member type="way" ref="383312029" role=""/>
+    <member type="way" ref="37401250" role=""/>
+    <member type="way" ref="453433967" role=""/>
+    <member type="way" ref="453433968" role=""/>
+    <member type="way" ref="37400339" role=""/>
+    <member type="way" ref="453433965" role=""/>
+    <member type="way" ref="453433966" role=""/>
+    <member type="way" ref="333553273" role=""/>
+    <member type="way" ref="183272449" role="forward"/>
+    <member type="way" ref="183272313" role="forward"/>
+    <member type="way" ref="219109931" role="forward"/>
+    <member type="way" ref="183272312" role="forward"/>
+    <member type="way" ref="183272314" role="forward"/>
+    <member type="way" ref="333554714" role=""/>
+    <member type="way" ref="218923167" role="forward"/>
+    <member type="way" ref="333554716" role="forward"/>
+    <member type="way" ref="223296642" role="backward"/>
+    <member type="way" ref="218923177" role=""/>
+    <member type="way" ref="218923162" role=""/>
+    <member type="way" ref="333554715" role=""/>
+    <member type="way" ref="220028617" role="backward"/>
+    <member type="way" ref="438360330" role="backward"/>
+    <member type="way" ref="331994927" role="forward"/>
+    <member type="way" ref="333554719" role="forward"/>
+    <member type="way" ref="37402371" role="forward"/>
+    <member type="way" ref="218926711" role="forward"/>
+    <member type="way" ref="183272601" role="forward"/>
+    <member type="way" ref="183272601" role="backward"/>
+    <member type="way" ref="218926710" role=""/>
+    <member type="way" ref="218926710" role="forward"/>
+    <member type="way" ref="289213613" role=""/>
+    <member type="way" ref="333972428" role=""/>
+    <member type="way" ref="183272462" role=""/>
+    <member type="way" ref="383097712" role=""/>
+    <member type="way" ref="218961360" role=""/>
+    <member type="way" ref="219096265" role=""/>
+    <member type="way" ref="218923156" role=""/>
+    <member type="way" ref="424940171" role="backward"/>
+    <member type="way" ref="333725870" role="backward"/>
+    <member type="way" ref="424940172" role="backward"/>
+    <member type="way" ref="218771978" role="forward"/>
+    <member type="way" ref="218923174" role="forward"/>
+    <member type="way" ref="218924602" role="forward"/>
+    <member type="way" ref="203502419" role="forward"/>
+    <member type="way" ref="183895356" role="forward"/>
+    <member type="way" ref="333725872" role=""/>
+    <member type="way" ref="183521185" role="forward"/>
+    <member type="way" ref="183521177" role="forward"/>
+    <member type="way" ref="333725871" role=""/>
+    <member type="way" ref="218660683" role=""/>
+    <member type="way" ref="37401816" role=""/>
+    <member type="way" ref="183521125" role=""/>
+    <member type="way" ref="183521126" role=""/>
+    <member type="way" ref="183895332" role=""/>
+    <member type="way" ref="183895331" role=""/>
+    <member type="way" ref="218975372" role=""/>
+    <member type="way" ref="218975374" role=""/>
+    <member type="way" ref="448704565" role=""/>
+    <member type="way" ref="183272442" role="forward"/>
+    <member type="way" ref="183272440" role="forward"/>
+    <member type="way" ref="183272438" role="backward"/>
+    <member type="way" ref="37402127" role="forward"/>
+    <member type="way" ref="219054277" role="backward"/>
+    <member type="way" ref="219054276" role="forward"/>
+    <member type="way" ref="183272408" role="forward"/>
+    <member type="way" ref="219054275" role="forward"/>
+    <tag k="name" v="163"/>
+    <tag k="ref" v="163"/>
+    <tag k="route" v="bus"/>
+    <tag k="type" v="route"/>
+  </relation>
+  <relation id="3882160">
+    <member type="way" ref="292221458" role="outer"/>
+    <member type="way" ref="181412936" role="outer"/>
+    <member type="way" ref="292291429" role="outer"/>
+    <member type="way" ref="181412922" role="outer"/>
+    <member type="way" ref="181412913" role="outer"/>
+    <member type="way" ref="292215856" role="outer"/>
+    <member type="way" ref="292215882" role="outer"/>
+    <member type="way" ref="292221429" role="outer"/>
+    <member type="way" ref="292221454" role="outer"/>
+    <tag k="admin_level" v="8"/>
+    <tag k="boundary" v="administrative"/>
+    <tag k="name" v="용신동 (Yongsin-dong)"/>
+    <tag k="type" v="boundary"/>
+  </relation>
+  <relation id="3882164">
+    <member type="way" ref="292221458" role="outer"/>
+    <member type="way" ref="292221430" role="outer"/>
+    <member type="way" ref="292221432" role="outer"/>
+    <member type="way" ref="292221459" role="outer"/>
+    <member type="way" ref="292291428" role="outer"/>
+    <tag k="admin_level" v="8"/>
+    <tag k="boundary" v="administrative"/>
+    <tag k="name" v="제기동 (Jegi-dong)"/>
+    <tag k="type" v="boundary"/>
+  </relation>
+  <relation id="3882174">
+    <member type="way" ref="292221458" role="outer"/>
+    <member type="way" ref="292221430" role="outer"/>
+    <member type="way" ref="292221432" role="outer"/>
+    <member type="way" ref="292221459" role="outer"/>
+    <member type="way" ref="292291428" role="outer"/>
+    <tag k="admin_level" v="9"/>
+    <tag k="boundary" v="administrative"/>
+    <tag k="name" v="전농제1동 (Jeonnong1-dong)"/>
+    <tag k="type" v="boundary"/>
+  </relation>
+  <relation id="3883194">
+    <member type="way" ref="292291443" role="outer"/>
+    <member type="way" ref="292291398" role="outer"/>
+    <member type="way" ref="292291439" role="outer"/>
+    <member type="way" ref="292291411" role="outer"/>
+    <member type="way" ref="292221459" role="outer"/>
+    <member type="way" ref="292291429" role="outer"/>
+    <member type="way" ref="448705125" role="building"/>
+    <member type="node" ref="368651136" role=""/>
+    <tag k="admin_level" v="8"/>
+    <tag k="boundary" v="administrative"/>
+    <tag k="name" v="안암동 (Anam-dong)"/>
+    <tag k="type" v="boundary"/>
+  </relation>
+
+</osm>

@@ -1,0 +1,11 @@
+<configuration>
+	<input>
+		<net-file value='Random.net.xml'/>
+		<route-files value='Random.rou.xml'/>
+		<gui-settings-file value='Random.settings.xml'/>
+	</input>
+	<time>
+		<begin value='0'/>
+		<end value='1800'/>
+	</time>
+</configuration>
