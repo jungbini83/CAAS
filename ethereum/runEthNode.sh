@@ -36,3 +36,7 @@ nohup geth --datadir ~/$root/data/$dd --rpc --rpcport "85${dd}" --rpcapi "admin,
 
 # 3. save this node's enode address
 geth --exec 'admin.nodeInfo.enode' attach http://localhost:85$dd > ~/$root/data/$dd/enode
+
+# 4. Add this node to Master node as a peer (tempolarly made)
+pnEnode=$(cat ~/${root}/data/$dd/enode)
+geth --exec "admin.addPeer($pnEnode)" attach http://localhost:9430

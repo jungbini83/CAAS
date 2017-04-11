@@ -25,7 +25,7 @@ fi
 sn=$1
 if [ $sn == 'master' ]; then
 	snd='master'
-	rpcport=8540
+	rpcport=9430
 else
 	snd=$(printf "%02d" $sn)		# change source node number to node ID like 01, 02, 03...
 	rpcport=85$snd
@@ -33,9 +33,9 @@ fi
 shift
 pn=$1
 if [ $pn == 'master' ]; then
-	pnd='master'
+	pnd='master'	
 else
-	pnd=$(printf "%02d" $pn)		# change peer node number to node ID like 01, 02, 03...
+	pnd=$(printf "%02d" $pn)		# change peer node number to node ID like 01, 02, 03...	
 fi
 
 # 1. read enode of peer node
@@ -43,4 +43,4 @@ pnEnode=$(cat ~/${root}/data/${pnd}/enode)
 
 # 2. add peer node to source node
 echo -n 'Adding node('$pnd') to node('$snd') result: '
-geth --exec "admin.addPeer($pnEnode)" attach http://localhost:$rpcport
+geth --exec 'admin.addPeer($pnEnode)' attach http://localhost:$rpcport
