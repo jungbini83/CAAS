@@ -493,19 +493,25 @@ public class SAConSimulator {
 
 class RunEthereum extends Thread {
 	
-	private String ethPath;
+	private String rootPath;	
 	private String nodeID;
 	
-	public RunEthereum(String ethPath, String nodeID) {
-		this.ethPath = ethPath;
+	public RunEthereum(String rootPath, String nodeID) {
+		this.rootPath = rootPath;	
 		this.nodeID = nodeID;
 	}
 	
 	public void run() {
-		String [] cmd = {ethPath + "/ethereum/runEthNode.sh", nodeID};
+		String [] cmdCreateNode 	= {rootPath + "/ethereum/runEthNode.sh", nodeID};
 		
 		try {
-			Runtime.getRuntime().exec(cmd);
+			Process script_exec = Runtime.getRuntime().exec(cmdCreateNode);
+			BufferedReader reader = new BufferedReader(new InputStreamReader(script_exec.getInputStream()));
+			
+			String output;
+			while ((output = reader.readLine()) != null)
+				System.out.println(output);
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
