@@ -225,7 +225,7 @@ public class SAConSimulator {
 					txtLog.append("Error: " + ioe.getMessage() + "\n");
 				}
 				
-				txtLog.append("Successfully establishing Ethereum master node!!");
+				txtLog.append("Successfully establishing Ethereum master node!!\n");
 				
 				btnNextStep.setEnabled(true);									// Set Next Step button enable
 				btnAutoStep.setEnabled(true); 									// Set Auto Step button enable
