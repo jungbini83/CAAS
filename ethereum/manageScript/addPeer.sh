@@ -40,7 +40,8 @@ fi
 
 # 1. read enode of peer node
 pnEnode=$(cat ~/${root}/data/${pnd}/enode)
+pnEnode='admin.addPeer('$pnEnode')'
 
 # 2. add peer node to source node
 echo -n 'Adding node('$pnd') to node('$snd') result: '
-geth --exec 'admin.addPeer($pnEnode)' attach http://localhost:$rpcport
+geth --exec $pnEnode attach http://localhost:$rpcport
