@@ -3,6 +3,7 @@ package caas.util;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Random;
 
 public class SASimUtil {
 
@@ -65,6 +66,13 @@ public class SASimUtil {
 		}
 		
 		return numOfVehicle;
+		
+	}
+	
+	public static <T extends Enum<?>> T randomEnum(Class<T> clazz) {
+		
+		int x = new Random().nextInt(clazz.getEnumConstants().length);
+		return clazz.getEnumConstants()[x];
 		
 	}
 	

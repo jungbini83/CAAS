@@ -14,15 +14,16 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import it.polito.appeal.traci.*;
 
-import caas.util.SASimUtil;
 import caas.element.SimVehicle;
+import caas.util.SASimUtil;
+
+import org.eclipse.swt.browser.Browser;
 
 public class SAConSimulator {
 	
 	// General variables
 	public final String HOME_DIR = System.getProperty("user.home");
 	
-	public SASimUtil saSimUtil = new SASimUtil();											// Utility class of this simulator
 
 	public static boolean autoStepRunning = false;
 	public double xPosWeight;
@@ -40,6 +41,7 @@ public class SAConSimulator {
 	protected Shell shlSelfadaptiveContractSimulator;
 	public Display display = Display.getDefault();
 	public SelectMapDialog selMapDialog;
+	public Browser browser;
 	
 	public Composite compMain;
 	public TreeItem trtmNewTreeitem;
@@ -67,6 +69,9 @@ public class SAConSimulator {
 		
 		createContents();
 		
+		browser = new Browser(shlSelfadaptiveContractSimulator, SWT.NONE);
+		browser.setBounds(809, 567, 268, 231);
+		
 		selMapDialog = new SelectMapDialog(shlSelfadaptiveContractSimulator, SWT.BORDER | SWT.CLOSE | SWT.TITLE);
 		selType = selMapDialog.open();
 		makeSUMOMap(selType);										// Making sumo map before running simulation		
@@ -83,12 +88,50 @@ public class SAConSimulator {
 	protected void createContents() {
 		
 		shlSelfadaptiveContractSimulator = new Shell(SWT.SHELL_TRIM & (~SWT.RESIZE));
-		shlSelfadaptiveContractSimulator.setSize(1049, 768);
+		shlSelfadaptiveContractSimulator.setSize(1093, 840);
 		shlSelfadaptiveContractSimulator.setText("Self-Adaptive Contract Simulator (test ver.)");
 		shlSelfadaptiveContractSimulator.setLayout(null);
 		
+		Group grpSimulationSetting = new Group(shlSelfadaptiveContractSimulator, SWT.NONE);
+		grpSimulationSetting.setText("Simulation Settings");
+		grpSimulationSetting.setBounds(3, 7, 1074, 59);
+		
+		Label lblEthereumDir = new Label(grpSimulationSetting, SWT.NONE);
+		lblEthereumDir.setBounds(229, 10, 97, 15);
+		lblEthereumDir.setText("Ethereum Dir:");
+		
+		txtEthDir = new Text(grpSimulationSetting, SWT.BORDER);
+		txtEthDir.setEnabled(false);
+		txtEthDir.setText("ethereum");
+		txtEthDir.setBounds(328, 6, 122, 23);	
+		
+		Label lblRootDir = new Label(grpSimulationSetting, SWT.NONE);
+		lblRootDir.setText("Root Dir:");
+		lblRootDir.setBounds(10, 10, 80, 15);
+		
+		txtRootDir = new Text(grpSimulationSetting, SWT.BORDER);
+		txtRootDir.setEnabled(false);
+		txtRootDir.setText("caas");
+		txtRootDir.setBounds(73, 6, 122, 23);
+		
+		Label label = new Label(grpSimulationSetting, SWT.NONE);
+		label.setText("Delay(ms):");
+		label.setBounds(481, 10, 80, 15);
+		
+		txtDelay = new Text(grpSimulationSetting, SWT.BORDER);
+		txtDelay.setText("500");
+		txtDelay.setBounds(570, 6, 122, 23);
+		
+		Label lblPeerDistance = new Label(grpSimulationSetting, SWT.NONE);
+		lblPeerDistance.setText("Peer Distance(m):");
+		lblPeerDistance.setBounds(726, 10, 118, 15);
+		
+		txtPeerDistance = new Text(grpSimulationSetting, SWT.BORDER);
+		txtPeerDistance.setText("100");
+		txtPeerDistance.setBounds(858, 6, 122, 23);
+		
 		compMain = new Composite(shlSelfadaptiveContractSimulator, SWT.NONE);
-		compMain.setBounds(3, 3, 800, 600);
+		compMain.setBounds(3, 72, 800, 600);
 		compMain.setBackground(SWTResourceManager.getColor(107, 142, 35));
 		
 		Button btnStartSim = new Button(compMain, SWT.NONE);
@@ -122,15 +165,17 @@ public class SAConSimulator {
 		
 		Group grpNodeProperties = new Group(shlSelfadaptiveContractSimulator, SWT.NONE);
 		grpNodeProperties.setText("Node & Properties");
-		grpNodeProperties.setBounds(809, 263, 228, 469);
+		grpNodeProperties.setBounds(809, 72, 268, 489);
 		
 		table = new Table(grpNodeProperties, SWT.BORDER | SWT.FULL_SELECTION);
-		table.setBounds(10, 202, 206, 241);
+		table.setBounds(10, 299, 246, 162);
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 		
+		settingTableItems();		
+		
 		TableColumn tblclmnNewColumn = new TableColumn(table, SWT.NONE);
-		tblclmnNewColumn.setWidth(100);
+		tblclmnNewColumn.setWidth(140);
 		tblclmnNewColumn.setText("Property");
 		
 		TableColumn tblclmnNewColumn_1 = new TableColumn(table, SWT.NONE);
@@ -140,7 +185,42 @@ public class SAConSimulator {
 		TreeViewer treeViewer = new TreeViewer(grpNodeProperties, SWT.BORDER);
 		
 		NodeTree = treeViewer.getTree();
-		NodeTree.setBounds(10, 10, 206, 186);
+		NodeTree.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event e) {				
+				TreeItem[] selection = NodeTree.getSelection();
+				String nodeName = selection[0].getText(); 
+				
+				if (!nodeName.equals("Ethereum")) { 
+					
+					SimVehicle selectedVehicle = null;
+					for (SimVehicle findNode: simVehicles)					// Find a vehicle having name of selected node
+						if (findNode.getID().equals(nodeName.substring(nodeName.indexOf('#')+1))) {
+							selectedVehicle = findNode;
+							break;
+						}
+					
+					if (selectedVehicle != null) {
+				
+						table.getItem(0).setText(new String[] {"Name", selectedVehicle.getID()});
+						table.getItem(1).setText(new String[] {"Monitoring Device", selectedVehicle.getDeviceName()});
+						table.getItem(2).setText(new String[] {"Monitoring Type", selectedVehicle.getDeviceType()});
+						table.getItem(3).setText(new String[] {"Resolution", selectedVehicle.getResolution()});
+						table.getItem(4).setText(new String[] {"Recording Time(s)", String.valueOf(selectedVehicle.getRecordingTime())});
+						table.getItem(5).setText(new String[] {"Target Distance(m)", String.valueOf(selectedVehicle.getTargetDistance())});
+						table.getItem(6).setText(new String[] {"Source Address", selectedVehicle.getSourceAddress()});
+						
+						if (selectedVehicle.getDeviceType().equals("Photo"))
+							browser.setUrl(selectedVehicle.getSourceAddress());
+						else
+							org.eclipse.swt.program.Program.launch(selectedVehicle.getSourceAddress());							
+						
+					}
+					
+				}
+				
+			}
+		});
+		NodeTree.setBounds(10, 10, 246, 283);
 		NodeTree.setLinesVisible(true);
 		
 		trtmNewTreeitem = new TreeItem(NodeTree, SWT.NONE);
@@ -150,45 +230,7 @@ public class SAConSimulator {
 		txtLog = new Text(shlSelfadaptiveContractSimulator, SWT.BORDER | SWT.READ_ONLY | SWT.V_SCROLL | SWT.MULTI);
 		txtLog.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		txtLog.setBackground(SWTResourceManager.getColor(SWT.COLOR_INFO_BACKGROUND));
-		txtLog.setBounds(3, 612, 800, 120);
-		
-		Group grpSimulationSetting = new Group(shlSelfadaptiveContractSimulator, SWT.NONE);
-		grpSimulationSetting.setText("Simulation Settings");
-		grpSimulationSetting.setBounds(809, 3, 228, 254);
-		
-		Label lblEthereumDir = new Label(grpSimulationSetting, SWT.NONE);
-		lblEthereumDir.setBounds(10, 40, 80, 15);
-		lblEthereumDir.setText("Ethereum Dir:");
-		
-		txtEthDir = new Text(grpSimulationSetting, SWT.BORDER);
-		txtEthDir.setEnabled(false);
-		txtEthDir.setText("ethereum");
-		txtEthDir.setBounds(114, 36, 100, 23);	
-		
-		Label lblRootDir = new Label(grpSimulationSetting, SWT.NONE);
-		lblRootDir.setText("Root Dir:");
-		lblRootDir.setBounds(10, 10, 80, 15);
-		
-		txtRootDir = new Text(grpSimulationSetting, SWT.BORDER);
-		txtRootDir.setEnabled(false);
-		txtRootDir.setText("caas");
-		txtRootDir.setBounds(114, 6, 100, 23);
-		
-		Label label = new Label(grpSimulationSetting, SWT.NONE);
-		label.setText("Delay(ms):");
-		label.setBounds(10, 69, 80, 15);
-		
-		txtDelay = new Text(grpSimulationSetting, SWT.BORDER);
-		txtDelay.setText("500");
-		txtDelay.setBounds(114, 65, 100, 23);
-		
-		Label lblPeerDistance = new Label(grpSimulationSetting, SWT.NONE);
-		lblPeerDistance.setText("Peer Distance(m):");
-		lblPeerDistance.setBounds(10, 97, 106, 15);
-		
-		txtPeerDistance = new Text(grpSimulationSetting, SWT.BORDER);
-		txtPeerDistance.setText("100");
-		txtPeerDistance.setBounds(114, 94, 100, 23);
+		txtLog.setBounds(3, 678, 800, 120);
 		
 		btnStartSim.addMouseListener(new MouseAdapter() {
 			
@@ -200,9 +242,9 @@ public class SAConSimulator {
 				connSumo = new SumoTraciConnection(mapPath, randomNum);
 				
 				try {
-					connSumo.runServer();
+					connSumo.runServer();					
 					connSumo.nextSimStep();												// First step is empty
-					
+										
 					txtLog.append("Successfully loading sumo map!!\n");
 					lblMapInfo.setText("Map siz:(" + connSumo.queryBounds().getWidth() + "," + connSumo.queryBounds().getHeight() + "), "
 									+ "Total # of Vehicles:" + SASimUtil.getNumOfVehicles("./map/" + selType[0] + "/" + selType[0] + ".rou.xml"));
@@ -277,7 +319,7 @@ public class SAConSimulator {
 			
 			public void mouseDown(MouseEvent e) {
 				
-				int stepTime = (int) saSimUtil.getLastDepartTime("./map/" + selType[0] + "/" + selType[0] + ".rou.xml");
+				int stepTime = (int) SASimUtil.getLastDepartTime("./map/" + selType[0] + "/" + selType[0] + ".rou.xml");
 				
 				autoStepRunning = true;
 				btnNextStep.setEnabled(false); 									// Set Next step button to disable
@@ -340,6 +382,7 @@ public class SAConSimulator {
 				btnStopSim.setEnabled(false);									// Set Stop button disable
 				
 				trtmNewTreeitem.removeAll(); 									// Remove all items of ethereum root tree item
+				settingTableItems();											// Clean Property Table				
 			}
 		});
 		
@@ -424,13 +467,17 @@ public class SAConSimulator {
 		compMain.addPaintListener(new PaintListener() {
 			public void paintControl(PaintEvent e) {
 				
-				e.gc.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_BLUE)); 
-				e.gc.setForeground(display.getSystemColor(SWT.COLOR_YELLOW)); 
-				
 				Font font = new Font(display,"Arial",9,SWT.BOLD); 
 				e.gc.setFont(font);
 				
 				for (SimVehicle simVehicle: simVehicles) {
+					
+					if (simVehicle.getID().equals("0"))
+						e.gc.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_RED));
+					else
+						e.gc.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_BLUE));
+					
+					e.gc.setForeground(display.getSystemColor(SWT.COLOR_YELLOW));
 					
 					// Draw Network Lines
 					List <String> peerNodeList = simVehicle.getConnectedNodes();
@@ -489,6 +536,25 @@ public class SAConSimulator {
 			e.printStackTrace();
 		}
 	}
+	
+	private void settingTableItems() {
+
+		table.removeAll();
+		TableItem nameItem = new TableItem(table, SWT.NONE);
+		nameItem.setText(new String[] {"Name", ""});
+		TableItem deviceItem = new TableItem(table, SWT.NONE);
+		deviceItem.setText(new String[] {"Monitoring Device", ""});
+		TableItem typeItem = new TableItem(table, SWT.NONE);
+		typeItem.setText(new String[] {"Monitoring Type", ""});
+		TableItem resolutionItem = new TableItem(table, SWT.NONE);
+		resolutionItem.setText(new String[] {"Resolution", ""});
+		TableItem timeItem = new TableItem(table, SWT.NONE);
+		timeItem.setText(new String[] {"Recording Time(s)", ""});
+		TableItem distanceItem = new TableItem(table, SWT.NONE);
+		distanceItem.setText(new String[] {"Target Distance(m)", ""});
+		TableItem srcItem = new TableItem(table, SWT.NONE);
+		srcItem.setText(new String[] {"Source Address", ""});
+	}
 }
 
 class RunEthereum extends Thread {
@@ -505,12 +571,7 @@ class RunEthereum extends Thread {
 		String [] cmdCreateNode 	= {rootPath + "/ethereum/runEthNode.sh", nodeID};
 		
 		try {
-			Process script_exec = Runtime.getRuntime().exec(cmdCreateNode);
-			BufferedReader reader = new BufferedReader(new InputStreamReader(script_exec.getInputStream()));
-			
-			String output;
-			while ((output = reader.readLine()) != null)
-				System.out.println(output);
+			Runtime.getRuntime().exec(cmdCreateNode);			
 			
 		} catch (IOException e) {
 			e.printStackTrace();
