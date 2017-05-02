@@ -260,8 +260,13 @@ public class SAConSimulator {
 				String [] cmd = {HOME_DIR + '/' + txtRootDir.getText() + "/ethereum/runMasterNode.sh", txtEthDir.getText()};
 				
 				try {
-
-					Runtime.getRuntime().exec(cmd);
+					
+					Process script_exec = Runtime.getRuntime().exec(cmd);
+					BufferedReader reader = new BufferedReader(new InputStreamReader(script_exec.getInputStream()));
+					
+					String output;
+					while ((output = reader.readLine()) != null)
+						System.out.println(output);
 					
 				} catch (IOException ioe) {
 					txtLog.append("Error: " + ioe.getMessage() + "\n");

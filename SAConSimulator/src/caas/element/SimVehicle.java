@@ -27,10 +27,10 @@ public class SimVehicle {
 	
 	// Monitoring device variables
 	
-	private enum DeviceNameEnum {CCTV, Blackbox, Smartphone};			// to get element randomly, use SASimUtil.randomEnum(DeviceName.class)
-	private String deviceName;
-	private enum DeviceTypeEnum {Photo, Video};
+	private enum DeviceTypeEnum {CCTV, Blackbox, Smartphone};			// to get element randomly, use SASimUtil.randomEnum(DeviceName.class)
 	private String deviceType;
+	private enum MonitoringTypeEnum {Photo, Video};
+	private String monitoringType;
 	private enum MonitoringResolutionEnum {UHD, QHD, FHD, SD};
 	private String monitoringResolution;
 	private int recordingTime;										// second
@@ -44,12 +44,12 @@ public class SimVehicle {
 		this.setDistance = setDistance;
 		this.ethCmdPath = ethCmdPath;
 		this.ethDir = ethDir;
-		this.deviceName = SASimUtil.randomEnum(DeviceNameEnum.class).toString();
 		this.deviceType = SASimUtil.randomEnum(DeviceTypeEnum.class).toString();
+		this.monitoringType = SASimUtil.randomEnum(MonitoringTypeEnum.class).toString();
 		this.monitoringResolution = SASimUtil.randomEnum(MonitoringResolutionEnum.class).toString();
 		this.recordingTime = random.nextInt(3600);
 		this.targetDistance = random.nextInt(100);
-		this.sourceAddress = getRandomAddress(this.deviceName, this.deviceType, this.monitoringResolution);
+		this.sourceAddress = getRandomAddress(this.deviceType, this.monitoringType, this.monitoringResolution);
 	}
 	
 	public void setXpos(double value) {
@@ -77,11 +77,11 @@ public class SimVehicle {
 	}
 	
 	public String getDeviceName() {
-		return deviceName;
+		return deviceType;
 	}
 	
 	public String getDeviceType() {
-		return deviceType;
+		return monitoringType;
 	}
 	
 	public String getResolution() {
