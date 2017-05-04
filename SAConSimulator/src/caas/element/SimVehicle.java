@@ -169,7 +169,7 @@ public class SimVehicle {
 	
 	public void addPeerNode(String peerId) {
 				
-		if (connectedPeerNode.contains(peerId)) {
+		if (!connectedPeerNode.contains(peerId)) {
 		
 			connectedPeerNode.add(peerId);
 			
@@ -178,12 +178,15 @@ public class SimVehicle {
 			String [] cmd = {ethCmdPath + "/ethereum/manageScript/addPeer.sh", ethDir, peerId, this.id};
 			
 			try {
-				Process script_exec = Runtime.getRuntime().exec(cmd);
-				BufferedReader reader = new BufferedReader(new InputStreamReader(script_exec.getInputStream()));
 				
-				String output;
-				while ((output = reader.readLine()) != null)
-					System.out.println(output);
+				Runtime.getRuntime().exec(cmd);
+				
+//				Process script_exec = Runtime.getRuntime().exec(cmd);
+//				BufferedReader reader = new BufferedReader(new InputStreamReader(script_exec.getInputStream()));
+//				
+//				String output;
+//				while ((output = reader.readLine()) != null)
+//					System.out.println(output);
 				
 			} catch (IOException ioe) {
 				ioe.printStackTrace();

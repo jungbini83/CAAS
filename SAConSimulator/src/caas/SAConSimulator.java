@@ -4,6 +4,7 @@ import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.*;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.*;
+import org.apache.logging.log4j.core.util.ArrayUtils;
 import org.eclipse.jface.viewers.*;
 import org.eclipse.wb.swt.SWTResourceManager;
 
@@ -24,10 +25,12 @@ public class SAConSimulator {
 	// General variables
 	public final String HOME_DIR = System.getProperty("user.home");
 	
-
+	
 	public static boolean autoStepRunning = false;
 	public double xPosWeight;
 	public double yPosWeight;
+	
+	public ArrayList <String> vehicleList;
 	
 	// SUMO related variables
 	public static ArrayList<SimVehicle> simVehicles = new ArrayList<SimVehicle>();				// Current Sumo Vehicle List
@@ -86,6 +89,8 @@ public class SAConSimulator {
 	}
 	
 	protected void createContents() {
+		
+		vehicleList = new ArrayList<String>();
 		
 		shlSelfadaptiveContractSimulator = new Shell(SWT.SHELL_TRIM & (~SWT.RESIZE));
 		shlSelfadaptiveContractSimulator.setSize(1093, 840);
@@ -296,20 +301,42 @@ public class SAConSimulator {
 						Collection<Vehicle> vehicles = connSumo.getVehicleRepository().getAll().values();
 						
 						// 1. Running Ethereum client and draw nodes to main composite
-						for (Vehicle vehicle: vehicles)
+						List <String> curVehicles = new ArrayList <String> ();
+						for (Vehicle vehicle: vehicles) {
+							curVehicles.add(vehicle.getID());
 							runEthereumClient(vehicle);
+						}
 						
-						// 2. Draw Vehicles and network lines
+						// 2. Terminate disappeared node
+						List <String> removedVehicles = new ArrayList<String>(vehicleList);
+						removedVehicles.removeAll(curVehicles);		
+						
+						if (removedVehicles.size() > 0) {							
+							for (String vehicleID: removedVehicles) {
+								
+								// Kill ethereum client
+								String tmpID = vehicleID.length() == 1 ? "0" + vehicleID : vehicleID;								
+								Runtime.getRuntime().exec("pkill -9 -ef \"/ethereum/data/" + tmpID);
+								
+								// Marking removed node to Node list
+								for (TreeItem tItem: trtmNewTreeitem.getItems()) {
+									if (tItem.getText().equals("Node#"+ vehicleID))
+										tItem.setText("[R]Node#"+ vehicleID);
+								}
+							}
+						}
+												
+						// 3. Draw Vehicles and network lines
 						drawVehicles(simVehicles);
 						
-						// 2. Print connected Nodes...
+						// 4. Print connected Nodes...
 						for (SimVehicle simVehicle: simVehicles) {
 							System.out.print("Node #" + simVehicle.getID() + "'s connected Nodes: { ");
 							for (String nodeID: simVehicle.getConnectedNodes()) 
 								System.out.print(nodeID + " ");
 							System.out.println("}");
 						}
-						
+												
 						connSumo.nextSimStep();			
 					} catch (IOException ioe) {
 						txtLog.append("Sumo Server error: " + ioe.getMessage() + "\n");
@@ -435,7 +462,7 @@ public class SAConSimulator {
 	}
 	
 	public void runEthereumClient(Vehicle vehicle) throws IOException {
-
+		
 		// Is this node newly entered in the node?
 		boolean isExistingVehicle = false;
 		for (SimVehicle simVehicle: simVehicles) {
@@ -455,6 +482,7 @@ public class SAConSimulator {
 			// update Newly entered node to Tree Update
 			TreeItem nodeItem = new TreeItem(trtmNewTreeitem, SWT.NONE);
 			nodeItem.setText("Node#" + vehicle.getID());
+			vehicleList.add(vehicle.getID());					// save vehicle ID to remove and stop ethereum node when the node is disappeared
 			
 			// running new ethereum node
 			Thread runEthClient = new RunEthereum(HOME_DIR + '/' + txtRootDir.getText(), vehicle.getID());
