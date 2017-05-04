@@ -461,7 +461,7 @@ public class SAConSimulator {
 			runEthClient.start();
 			
 			// add Newly entered node to simVehicle
-			SimVehicle newVehicleNode = new SimVehicle(vehicle.getID(), vehicle.getPosition().getX(), vehicle.getPosition().getY(), txtPeerDistance.getText(), HOME_DIR + '/' + txtRootDir.getText(), txtEthDir.getText());
+			SimVehicle newVehicleNode = new SimVehicle(vehicle.getID(), vehicle.getPosition().getX(), vehicle.getPosition().getY(), Double.parseDouble(txtPeerDistance.getText()), HOME_DIR + '/' + txtRootDir.getText(), txtEthDir.getText());
 			simVehicles.add(newVehicleNode);
 			newVehicleNode.findNearNodes(simVehicles);
 		}
