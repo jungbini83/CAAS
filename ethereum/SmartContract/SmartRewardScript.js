@@ -14,10 +14,42 @@ var smartRewardContract = eth.contract(smartRewardCompiled.SmartReward.info.abiD
 var smartReward = smartRewardContract.new(5000000, {from: eth.accounts[0], data: smartRewardCompiled.SmartReward.code, gas: 1000000}, function(e, contract) {
 	if(!e) {
 		if(!contract.address) {						
-			console.log("Contract transaction send: TransactionHash: " + contract.transactionHash + " wating to be mined...");
+			console.log(contract.transactionHash);				
+			
 		} else {
-			console.log("Contract mined! Address: " + contract.address);						
+			console.log("Contract mined! Address: " + contract.address);				
 		}
 	}
 });
 
+// 6. Adding events when the contract is deployed
+function checkAddress() {
+	if(smartReward.address) {
+		
+		console.log(smartReward.address);
+
+		// 6-1. Adding detecter watcher
+		console.log("Adding DetectCriminal event...");
+		var detectEvent = smartReward.DetectCriminal({}, '', function(error, result) {
+			if (!error) {
+				console.log("Detecting criminal from Addr: " + result.args.reporter + "!!\n1. Device Type: " + result.args.deviceType + "\n2. Monitoring Type: " + result.args.monitoringType +
+							"\n3. Monitoring Resolution: " + result.args.monitoringResolution + "\n4. Recording Time: " + result.args.recordingTime +
+							"(s)\n5. Target Distance: " + result.args.targetDistance + "(m)\n6. Source Address: " + result.args.sourceAddress);
+			}
+		});
+
+		// 6-2. Adding transfer watcher
+		console.log("Adding RewardTransfer event...");
+		var transferEvent = smartReward.RewardTransfer({}, '', function(error, result) {
+			if (!error) {
+				console.log("Reward transfer: " + result.args.amount + " tokens were sent. Balances now are as follwing: \nPolice Agency:\t" + result.args.sender +
+							" \t" + smartReward.coinBalanceOf.call(result.args.sender) + " tokens \n Reporter:\t" + result.args.reporter + 
+							" \t" + smartReward.coinBalanceOf.call(result.args.reporter) + " tokens (temp: " + result.args.temp + ")");
+			}
+		});
+
+		clearInterval(t);
+	}
+}
+
+t = setInterval(checkAddress, 1000);

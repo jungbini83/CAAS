@@ -69,7 +69,7 @@ contract SmartReward {
 			coinBalanceOf[nodes[j].addr] += nodes[j].weight;
 			RewardTransfer(policeAgency, nodes[j].addr, nodes[j].deviceType * deviceTypeWeight, nodes[j].weight);
 		}
-		
+
 		return true;
 	}
 
