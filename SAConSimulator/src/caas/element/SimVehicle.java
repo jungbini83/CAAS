@@ -1,8 +1,6 @@
 package caas.element;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -34,7 +32,7 @@ public class SimVehicle {
 	private String monitoringType;
 	private enum MonitoringResolutionEnum {SD, FHD, QHD, UHD};
 	private String monitoringResolution;
-	private int recordingTime;											// second
+	private double recordingTime;											// second
 	private int targetDistance;											// meter 
 	private String sourceAddress;										// Recording source address
 	
@@ -43,14 +41,14 @@ public class SimVehicle {
 		this.xpos = xpos;
 		this.ypos = ypos;
 		this.setDistance = setDistance;
-		this.monitoringDistance = random.nextDouble() * 100;			// nextDouble = 0 ~ 1.0
+		this.monitoringDistance = random.nextDouble() * 50 + 50;			// nextDouble = 0 ~ 1.0
 		this.ethCmdPath = ethCmdPath;
 		this.ethDir = ethDir;
 		this.deviceType = SASimUtil.randomEnum(DeviceTypeEnum.class).toString();
 		this.monitoringType = SASimUtil.randomEnum(MonitoringTypeEnum.class).toString();
 		this.monitoringResolution = SASimUtil.randomEnum(MonitoringResolutionEnum.class).toString();
-		this.recordingTime = random.nextInt(3600);
-		this.targetDistance = random.nextInt(100);
+		this.recordingTime = 0.0;
+		this.targetDistance = random.nextInt(new Double(monitoringDistance).intValue());
 		this.sourceAddress = getRandomAddress(this.deviceType, this.monitoringType, this.monitoringResolution);
 	}
 	
@@ -74,6 +72,10 @@ public class SimVehicle {
 		this.id = id;
 	}
 	
+	public void setRecordingTime(int recordingTime) {
+		this.recordingTime = recordingTime;
+	}
+	
 	public String getID() {
 		return id;
 	}
@@ -90,12 +92,16 @@ public class SimVehicle {
 		return monitoringResolution;
 	}
 	
-	public int getRecordingTime() {
+	public double getRecordingTime() {
 		return recordingTime;
 	}
 	
 	public int getTargetDistance() {
 		return targetDistance;
+	}
+	
+	public double getMonitoringDistance() {
+		return monitoringDistance;
 	}
 	
 	public String getSourceAddress() {
@@ -159,10 +165,17 @@ public class SimVehicle {
 				yLength = Math.abs(ypos - vehicle.getYpos());
 				nodeDistance = Math.sqrt(Math.pow(xLength,2) + Math.pow(yLength,2));
 				
-				if (setDistance > nodeDistance)
+				// 1. connecting peer nodes
+				if (setDistance > nodeDistance)					
 					addPeerNode(vehicle.getID());
 				else
 					removePeerNode(vehicle.getID());
+				
+				// 2. measuring recording time 
+				if (vehicle.getID().equals("0") && monitoringDistance > nodeDistance) {
+					this.recordingTime += 0.5;
+					System.out.println("Node#" + this.id + " captured criminal Node#0 (Recording time: " + recordingTime + "s)");
+				}
 			}
 		}
 	}
