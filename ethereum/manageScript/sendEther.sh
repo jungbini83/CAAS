@@ -25,7 +25,7 @@ fi
 sn=$1
 if [ $sn == "master" ]; then
 	snd='master'
-	rpcport=8540
+	rpcport=9430
 else
 	snd=$(printf "%02d" $sn)
 	rpcport=85$snd
