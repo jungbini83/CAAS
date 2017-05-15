@@ -23,6 +23,7 @@ public class SimVehicle {
 	// Node variables
 	private double nodeDistance;
 	private List <String> connectedPeerNode = new ArrayList<String> ();
+	private List <String> monitoringNode = new ArrayList<String>();
 	
 	// Monitoring device variables
 	
@@ -35,6 +36,7 @@ public class SimVehicle {
 	private double recordingTime;											// second
 	private int targetDistance;											// meter 
 	private String sourceAddress;										// Recording source address
+	private int balanceOfCoin;
 	
 	public SimVehicle(String id, double xpos, double ypos, double setDistance, String ethCmdPath, String ethDir) {
 		this.id = id;
@@ -49,7 +51,7 @@ public class SimVehicle {
 		this.monitoringResolution = SASimUtil.randomEnum(MonitoringResolutionEnum.class).toString();
 		this.recordingTime = 0.0;
 		this.targetDistance = random.nextInt(new Double(monitoringDistance).intValue());
-		this.sourceAddress = getRandomAddress(this.deviceType, this.monitoringType, this.monitoringResolution);
+		this.sourceAddress = getRandomAddress(this.deviceType, this.monitoringType, this.monitoringResolution);		
 	}
 	
 	public void setXpos(double value) {
@@ -58,6 +60,10 @@ public class SimVehicle {
 	
 	public void setYpos(double value) {
 		ypos = value;
+	}
+	
+	public void setCoin(int coin) {
+		this.balanceOfCoin = coin;
 	}
 	
 	public double getXpos() throws IOException {
@@ -110,6 +116,14 @@ public class SimVehicle {
 	
 	public List<String> getConnectedNodes() {
 		return connectedPeerNode;
+	}
+	
+	public List<String> getMonitoringNodes() {
+		return monitoringNode;
+	}
+	
+	public int getBalanceofCoin() {
+		return this.balanceOfCoin;
 	}
 	
 	public String getRandomAddress(String name, String type, String resolution) {
@@ -173,8 +187,15 @@ public class SimVehicle {
 				
 				// 2. measuring recording time 
 				if (vehicle.getID().equals("0") && monitoringDistance > nodeDistance) {
+					
 					this.recordingTime += 0.5;
+					monitoringNode.add(vehicle.getID());					
 					System.out.println("Node#" + this.id + " captured criminal Node#0 (Recording time: " + recordingTime + "s)");
+					
+				} else if (vehicle.getID().equals("0") && monitoringDistance <= nodeDistance) {
+					
+					monitoringNode.remove(vehicle.getID());
+					
 				}
 			}
 		}
@@ -193,13 +214,6 @@ public class SimVehicle {
 			try {
 				
 				Runtime.getRuntime().exec(cmd);
-				
-//				Process script_exec = Runtime.getRuntime().exec(cmd);
-//				BufferedReader reader = new BufferedReader(new InputStreamReader(script_exec.getInputStream()));
-//				
-//				String output;
-//				while ((output = reader.readLine()) != null)
-//					System.out.println(output);
 				
 			} catch (IOException ioe) {
 				ioe.printStackTrace();

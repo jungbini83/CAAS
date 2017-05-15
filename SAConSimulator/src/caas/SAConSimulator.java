@@ -96,7 +96,7 @@ public class SAConSimulator {
 		
 		shlSelfadaptiveContractSimulator = new Shell(SWT.SHELL_TRIM & (~SWT.RESIZE));
 		shlSelfadaptiveContractSimulator.setSize(1093, 840);
-		shlSelfadaptiveContractSimulator.setText("Self-Adaptive Contract Simulator (test ver.)");
+		shlSelfadaptiveContractSimulator.setText("Self-Adaptive Contract Simulator (v1.0)");
 		shlSelfadaptiveContractSimulator.setLayout(null);
 		
 		Group grpSimulationSetting = new Group(shlSelfadaptiveContractSimulator, SWT.NONE);
@@ -275,8 +275,8 @@ public class SAConSimulator {
 					lblMapInfo.setText("Map siz:(" + connSumo.queryBounds().getWidth() + "," + connSumo.queryBounds().getHeight() + "), "
 									+ "Total # of Vehicles:" + SASimUtil.getNumOfVehicles("./map/" + selType[0] + "/" + selType[0] + ".rou.xml"));
 					
-					xPosWeight = compMain.getBounds().width / connSumo.queryBounds().getWidth();
-					yPosWeight = compMain.getBounds().height / connSumo.queryBounds().getHeight();
+					xPosWeight = (compMain.getBounds().width-40) / connSumo.queryBounds().getWidth();
+					yPosWeight = (compMain.getBounds().height-40) / connSumo.queryBounds().getHeight();
 					
 				} catch (Exception ex) {
 					txtLog.append("Sumo Server error: " + ex.getMessage() + "\n");
@@ -296,30 +296,15 @@ public class SAConSimulator {
 					String output;
 					while ((output = reader.readLine()) != null)
 						System.out.println(output);
-					reader.close();
-					script_exec.destroy();
-					
+												
 					System.out.println("2. Deploy smart contract...");					
-					Runtime rt = Runtime.getRuntime();
-					Process proc = rt.exec(cmd2);
-					proc.waitFor();
-					StringBuffer output2 = new StringBuffer();
-					BufferedReader reader1 = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-					
-					String line;
-					while ((line = reader1.readLine()) != null)
-						output2.append(line + '\n');	
-					System.out.println("### " + output2);
-					
-					reader1.close();
-					proc.destroy();
-					rt.gc();
+					reader = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec(cmd2).getInputStream()));
+					while ((output = reader.readLine()) != null)
+						System.out.println(output);					
 					
 				} catch (IOException ioe) {
 					txtLog.append("Error: " + ioe.getMessage() + "\n");
-				} catch (InterruptedException ie) {
-					ie.printStackTrace();
-				}
+				}	
 				
 				txtLog.append("Successfully establishing Ethereum master node!!\n");
 				
@@ -375,10 +360,14 @@ public class SAConSimulator {
 						
 						// 4. Print connected Nodes...
 						for (SimVehicle simVehicle: simVehicles) {
-							System.out.print("Node #" + simVehicle.getID() + "'s connected Nodes: { ");
-							for (String nodeID: simVehicle.getConnectedNodes()) 
-								System.out.print(nodeID + " ");
-							System.out.println("}");
+							
+							if (simVehicle.getConnectedNodes().size() > 0) {							
+								System.out.print("Node #" + simVehicle.getID() + "'s connected Nodes: { ");
+								for (String nodeID: simVehicle.getConnectedNodes()) 
+									System.out.print(nodeID + " ");
+								System.out.println("}");								
+							}
+							
 						}
 												
 						connSumo.nextSimStep();			
@@ -470,7 +459,7 @@ public class SAConSimulator {
 				
 				summaryReward();
 				
-				try {															// Terminate all resources and ethereum client
+				try {															// Terminate all resources and ethereum client					
 					terminate();
 				} catch (InterruptedException | IOException e1) {
 					e1.printStackTrace();
@@ -488,7 +477,7 @@ public class SAConSimulator {
 		
 		shlSelfadaptiveContractSimulator.addDisposeListener(new DisposeListener()  {
 			public void widgetDisposed(DisposeEvent arg0)  {				
-				try {
+				try {					
 					terminate();
 				} catch (InterruptedException | IOException e) {
 					e.printStackTrace();
@@ -499,44 +488,22 @@ public class SAConSimulator {
 	
 	protected void summaryReward() {
 		
-		// 3. running reward process
-		for (SimVehicle vehicle: simVehicles) {
-			//rewardContract(vehicle);
-		}	
+		ArrayList<SimVehicle> reporters = new ArrayList<SimVehicle>();
+		for (SimVehicle vehicle: simVehicles)
+			if (vehicle.getRecordingTime() > 0)				// Adding only vehicles recording criminal to reporter list
+				reporters.add(vehicle);
 		
-//		String cmd = HOME_DIR + '/' + txtRootDir.getText() + "/ethereum/SmartContract/FindContractAddress.sh " + txtEthDir.getText();
-//		try {
-//			
-//			System.out.println("Get contract address...");					
-//			
-//			Runtime rt = Runtime.getRuntime();
-//			Process proc = rt.exec(cmd);
-//			proc.waitFor();
-//			StringBuffer output = new StringBuffer();
-//			BufferedReader reader = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-//			
-//			String line;
-//			while ((line = reader.readLine()) != null)
-//				output.append(line + '\n');	
-//			System.out.println("### " + output);
-//			
-//		} catch (IOException | InterruptedException ioe) {
-//			txtLog.append("Error: " + ioe.getMessage() + "\n");
-//		}
-		
-		rewardSummaryDialog = new RewardSummary(shlSelfadaptiveContractSimulator, SWT.BORDER | SWT.CLOSE | SWT.TITLE);
-		rewardSummaryDialog.open();
-		
+		rewardSummaryDialog = new RewardSummary(shlSelfadaptiveContractSimulator, SWT.BORDER | SWT.CLOSE | SWT.TITLE, txtRootDir.getText(), txtEthDir.getText(), txtReward.getText(), reporters);
+		rewardSummaryDialog.open();		
 	}
 
 	public void terminate() throws InterruptedException, IOException {
 		
-
 		// 1. disconnecting SUMO...
 		if (connSumo != null) {
+			System.out.println("Terminate all resources and ethereum clients...");
 			connSumo.close();
-			autoStepRunning = false;
-			System.out.println("Closing SUMO Server...");
+			autoStepRunning = false;			
 		}
 		
 		// 2. cleaning GUI resources..
@@ -548,8 +515,7 @@ public class SAConSimulator {
 		simVehicles = new ArrayList<SimVehicle>();
 		
 		// 4. terminating ethereum clients...
-		System.out.println("Terminate all ethereum nodes...");
-		
+				
 		String [] cmd = {"killall", "geth"};				
 		String [] removeCmd = {"rm", "-r", HOME_DIR + "/" + txtEthDir.getText()};
 		
@@ -561,8 +527,7 @@ public class SAConSimulator {
 			System.out.println(output);
 		}
 		
-		Runtime.getRuntime().exec(removeCmd);
-		System.out.println("Successfully terminated!");
+		Runtime.getRuntime().exec(removeCmd);		
 	}
 	
 	public void runEthereumClient(Vehicle vehicle) throws IOException {
@@ -614,7 +579,7 @@ public class SAConSimulator {
 					else
 						e.gc.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_BLUE));
 					
-					e.gc.setForeground(display.getSystemColor(SWT.COLOR_YELLOW));
+					e.gc.setForeground(display.getSystemColor(SWT.COLOR_WHITE));
 					
 					// Draw Network Lines
 					List <String> peerNodeList = simVehicle.getConnectedNodes();
@@ -626,13 +591,36 @@ public class SAConSimulator {
 								targetNode = findNode;
 								
 						if (simVehicle.getID() != peerNode) {
-							try {
+							try {		
+								e.gc.setLineWidth(2);
 								e.gc.drawLine((int)(simVehicle.getXpos()*xPosWeight)+20, (int)(simVehicle.getYpos()*yPosWeight)+20,
 											(int)(targetNode.getXpos()*xPosWeight)+20, (int)(targetNode.getYpos()*yPosWeight)+20);
 							} catch (IOException e1) {
 								e1.printStackTrace();
 							}
 						}
+					}
+					
+					e.gc.setForeground(display.getSystemColor(SWT.COLOR_YELLOW));
+					
+					List <String> reportNodeList = simVehicle.getMonitoringNodes();
+					for (String rNode: reportNodeList) {
+						
+						SimVehicle targetNode = null;
+						for (SimVehicle findNode: simVehicles)
+							if (findNode.getID() == rNode)
+								targetNode = findNode;
+								
+						if (simVehicle.getID() != rNode) {
+							try {
+								e.gc.setLineWidth(5);								
+								e.gc.drawLine((int)(simVehicle.getXpos()*xPosWeight)+20, (int)(simVehicle.getYpos()*yPosWeight)+20,
+											(int)(targetNode.getXpos()*xPosWeight)+20, (int)(targetNode.getYpos()*yPosWeight)+20);
+							} catch (IOException e1) {
+								e1.printStackTrace();
+							}
+						}
+						
 					}
 					
 					String vehID = simVehicle.getID().replace("veh", "");
