@@ -27,7 +27,7 @@ contract SmartReward {
 		string sourceAddress;
 	}
 
-	function SmartReward(uint totalReward) {
+	function SmartReward(uint totalReward) payable {
 		policeAgency = msg.sender;
 		coinBalanceOf[policeAgency] = totalReward;				/* supply total reward from sender */		
 
@@ -42,8 +42,8 @@ contract SmartReward {
 	}
 
 	function detectCriminal(address sender, uint _deviceType, uint _monitoringType, uint _monitoringResolution, uint _recordingTime, uint _targetDistance, string _sourceAddress) {
-		nodes[nodeLength] = NodeInfo(sender, 0, _deviceType, _monitoringType, _monitoringResolution, _recordingTime, _targetDistance*10, _sourceAddress);
-		DetectCriminal(sender, _deviceType, _monitoringType, _monitoringResolution, _recordingTime, _targetDistance*10, _sourceAddress);
+		nodes[nodeLength] = NodeInfo(sender, 0, _deviceType, _monitoringType, _monitoringResolution, _recordingTime, _targetDistance, _sourceAddress);
+		DetectCriminal(sender, _deviceType, _monitoringType, _monitoringResolution, _recordingTime, _targetDistance, _sourceAddress);
 		
 		nodeLength += 1;
 	}
@@ -54,13 +54,17 @@ contract SmartReward {
 		uint sumWeight = 0;
 
 		for (uint i = 0 ; i < nodeLength ; ++i) {
-			nodes[i].weight	+= (nodes[i].deviceType * deviceTypeWeight);
-			nodes[i].weight	+= (nodes[i].monitoringType * monitoringTypeWeight);      
-			nodes[i].weight	+= (nodes[i].monitoringResolution * monitoringResolutionWeight);
-			nodes[i].weight	+= (nodes[i].recordingTime * recordingTimeWeight);
-			nodes[i].weight	+= (100 - (targetDistanceWeight * nodes[i].targetDistance));
 
-			sumWeight = nodes[i].weight;
+			if (nodes[i].weight == 0) {
+
+				nodes[i].weight	+= (nodes[i].deviceType * deviceTypeWeight);
+				nodes[i].weight	+= (nodes[i].monitoringType * monitoringTypeWeight);      
+				nodes[i].weight	+= (nodes[i].monitoringResolution * monitoringResolutionWeight);
+				nodes[i].weight	+= (nodes[i].recordingTime * recordingTimeWeight);
+				nodes[i].weight	+= (100-(targetDistanceWeight * nodes[i].targetDistance));
+
+				sumWeight = nodes[i].weight;
+			}
 		}
 
 		for (uint j = 0 ; j < nodeLength ; ++j) {
